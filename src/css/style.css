@@ -1,0 +1,57 @@
+.flex-container {
+    display: flex;
+    width: 100%;
+  }
+.flex-1 {
+    flex: 1 0 auto; 
+    margin: 5px;
+}
+p {
+    text-decoration-color: white;
+    text-decoration: white;
+}
+.footer{
+    bottom: 0;
+    position: fixed;
+    height: 80px;    
+    color: black;
+    background-color: white;
+    vertical-align: middle;
+    /* border: 1px solid black; */
+}
+.al-cn{
+    text-align-last:center;
+}
+form.example input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+  }
+  
+  /* Style the submit button */
+  form.example button {
+    float: left;
+    width: 15%;
+    padding: 10px;
+    background: #2196F3;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none; /* Prevent double borders */
+    cursor: pointer;
+  }
+  
+  form.example button:hover {
+    background: #0b7dda;
+  }
+  
+  /* Clear floats */
+  form.example::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
