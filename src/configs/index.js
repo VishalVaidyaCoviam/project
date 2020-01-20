@@ -1,7 +1,7 @@
 // export default{
 //     api:{
 //         base_path:{
-//             auth:'0.0.0.0:3000'
+//             auth:'localhost:3000'
 //         },
 //         login:{
 //             login:'/login'

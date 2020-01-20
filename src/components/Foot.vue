@@ -11,8 +11,8 @@
       Subscribe
       <br />
       <form class="example">
-        <input type="text" placeholder="Search.." name="search" />
-        <button type="submit">
+        <input type="text" placeholder="Enter Email To Subscribe" name="search" />
+        <button>
           Subscribe
         </button>
       </form>
@@ -27,7 +27,6 @@
 export default {
   name: "foot",
   props: {
-    msg: String
   }
 };
 </script>

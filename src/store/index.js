@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     popular:{},
-    product:{}
+    product:{},
+    merchantProduct:{}
   },
   mutations: {
     popularProductsMutation(state,data)
@@ -17,7 +18,13 @@ export default new Vuex.Store({
     productDetailsMutation(state,data)
     {
       state.product = data;
-      window.console.log(data);
+      // window.console.log(state.product.data);
+    }
+    ,
+    merchantProductDetailsMutation(state,data)
+    {
+      state.merchantProduct = data;
+      // window.console.log(state.merchantProduct.data);
     }
   },
   actions: {
@@ -26,20 +33,31 @@ export default new Vuex.Store({
     .get("/solrsearch/popular")
     .then(response => (commit('popularProductsMutation',response))) 
     },
-    productDetailsAction({commit},productId){
+    productDetailsAction({commit}){
       axios
-      .get("/product/details/"+productId)
+      // .get("/product/details/"+productId)
+      .get("/product/details")
       .then(response => (commit('productDetailsMutation',response))) 
     }
-    // productAction({commit},productId)
-    // {
-    //   axios
-    //   .get(configs)
-    // }
+    ,
+    // merchantProductDetailsAction({commit},productId)
+    merchantProductDetailsAction({commit})
+    {
+      axios
+      // .get("/merchant/product/"+productId)
+      .get("/merchant/product")
+      .then(response => (commit('merchantProductDetailsMutation',response)))
+    }
   },
   getters: {
     popularProductsGetter(state) {
       return state.popular;
+    },
+    productDetailsGetter(state) {
+      return state.product;
+    },
+    merchantProductDetailsGetter(state) {
+      return state.merchantProduct;
     }
   }
 })

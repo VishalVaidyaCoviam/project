@@ -6,9 +6,19 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path:'/popular',
+    name: 'popularProduct',
+    component: () => import( /* webpackChunkName: "about" */ '../components/PopularProduct.vue'),
+  },
+  {
+    path:'/product/:id',
+    name: 'productDetails',
+    component: () => import( /* webpackChunkName: "about" */ '../components/ProductDetails.vue'),
   }
 ]
 

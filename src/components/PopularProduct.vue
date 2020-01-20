@@ -1,6 +1,6 @@
 <template>
   <div class="flex-container flex-wrap">
-  <div v-for="product in popularProductsGetter.data" v-bind:key="product.productId" class="prod-div al-cn" @click="productDetails(product.productId)">
+  <div v-for="product in popularProductsGetter.data" v-bind:key="product.productId" class="prod-div al-cn" @click=productDetails(product.productId)>
       <img v-bind:src="product.productImage" class="prod" alt="">
       <br>
       <label class="label-prod">{{product.productName}}</label>
@@ -10,9 +10,8 @@
 <script>
 import {mapGetters} from 'vuex';
 export default {
-  name: "foot",
+  name: "popularProduct",
   props: {
-    msg: String
   },
   data:() =>{
     return{
@@ -22,7 +21,9 @@ export default {
     productDetails(prodcutId)
     {
       window.console.log(prodcutId);
-      this.$store.dispatch(['productDetailsAction'],prodcutId);
+      // router.push({ path: `/user/${userId}` }) // -> /user/123
+
+      this.$router.push({ path: `/product/${prodcutId}` })
     }
   },
   computed:{
