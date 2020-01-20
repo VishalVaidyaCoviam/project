@@ -1,13 +1,14 @@
 <template>
-  <div class="flex-container">
-    HJello
-  <div v-for="product in info" class="flex-1" v-bind:key="product.productId">
-      {{product.productId}}
+  <div class="flex-container flex-wrap">
+  <div v-for="product in popularProductsGetter.data" v-bind:key="product.productId" class="prod-div al-cn" @click="productDetails(product.productId)">
+      <img v-bind:src="product.productImage" class="prod" alt="">
+      <br>
+      <label class="label-prod">{{product.productName}}</label>
   </div>
   </div>
 </template>
 <script>
-import axios from 'axios'
+import {mapGetters} from 'vuex';
 export default {
   name: "foot",
   props: {
@@ -15,20 +16,21 @@ export default {
   },
   data:() =>{
     return{
-    info: null
     }
   },
   methods:{
-    logs(){
-      window.console.log(this.info);
+    productDetails(prodcutId)
+    {
+      window.console.log(prodcutId);
+      this.$store.dispatch(['productDetailsAction'],prodcutId);
     }
   },
+  computed:{
+    ...mapGetters(['popularProductsGetter'])
+  }
+  ,
   mounted(){
-    axios
-    .get('http://0.0.0.0:3000/solrsearch/popular')
-    .then(response => (this.info=response.data)) //this.info = response
-    
-    this.logs()
+    this.$store.dispatch('PopularProductAction');
   }
 };
 </script>

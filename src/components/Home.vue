@@ -1,7 +1,7 @@
 <template>
   <div>
-      <Homef></Homef>
       <PopularProduct></PopularProduct>
+      <Homef></Homef>
   </div>
 </template>
 import 

@@ -13,12 +13,12 @@
       <form class="example">
         <input type="text" placeholder="Search.." name="search" />
         <button type="submit">
-          search
+          Subscribe
         </button>
       </form>
     </div>
     <div class="flex-1 al-cn">
-      Foolow Us
+      Follow Us
       <br />
     </div>
   </div>
