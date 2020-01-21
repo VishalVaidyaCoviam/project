@@ -1,128 +1,94 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import firebase from 'firebase'
-
-import {Googleprovider,Facebookprovider} from '../../firebaseConfig'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    popular:{},
-    product:{},
-    merchantProduct:{},
-    Googletoken:{},
-    Facebooktoken:{}
+    userAccessToken:'1',
+    merchantProducts:[],
+    products:[],
+    merchantProfile:{},
+    merchantOrders:[]
   },
   mutations: {
-    popularProductsMutation(state,data)
-    {
-      state.popular = data;
+        merchantProductList(state,data){
+            state.merchantProducts = data 
+          },
+        setMerchantProfile(state,data){
+            state.merchantProfile = data
+          },
+        ordersReceived(state,data){
+            state.merchantOrders=data
+          },
+        allProducts(state,data){
+            state.products=data
+          }
     },
-    productDetailsMutation(state,data)
-    {
-      state.product = data;
-      // window.console.log(state.product.data);
-    }
-    ,
-    merchantProductDetailsMutation(state,data)
-    {
-      state.merchantProduct = data;
-      // window.console.log(state.merchantProduct.data);
-    },
-    GoogleMutation(state,token)
-    {
-      state.Googletoken = token;
-    },
-    FacebookMutation(state,token)
-    {
-      state.Facebooktoken = token;
-    }
-  },
   actions: {
-    GoogleLogin({commit}){
-      firebase.auth().signInWithPopup(Googleprovider).then(function(result) {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken;
-        // The signed-in user info.
-        var user = result.user;
-        window.console.log(token);
-        window.console.log(user);
-        commit('GoogleMutation',token);
-        // ...
-      }).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
-        window.console.log(errorCode);
-        window.console.log(errorMessage);
-        window.console.log(email);
-        window.console.log(credential);
-        
-      });
-    },
-    FacebookLogin({commit}){
-      firebase.auth().signInWithPopup(Facebookprovider).then(function(result) {
-        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-        var token = result.credential.accessToken;
-        // The signed-in user info.
-        var user = result.user;
-        window.console.log(token);
-        window.console.log(user);
-        commit('FacebookMutation',token);
-        // ...
-      }).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        window.console.log(errorCode);
-        window.console.log(errorMessage);
-        window.console.log(email);
-        window.console.log(credential);
-        // ...
-      });
-    }
-    ,
-    PopularProductAction({commit}) {
-      axios
-    .get("/solrsearch/popular")
-    .then(response => (commit('popularProductsMutation',response))) 
-    },
-    productDetailsAction({commit}){
-      axios
-      // .get("/product/details/"+productId)
-      .get("/product/details")
-      .then(response => (commit('productDetailsMutation',response))) 
-    }
-    ,
-    // merchantProductDetailsAction({commit},productId)
-    merchantProductDetailsAction({commit})
-    {
-      axios
-      // .get("/merchant/product/"+productId)
-      .get("/merchant/product")
-      .then(response => (commit('merchantProductDetailsMutation',response)))
-    }
-  },
+        getMerchantListOfProducts({commit}){
+            axios
+            .get('/merchant/listOfProduct')
+            .then((response) => {
+            commit('merchantProductList', response)
+              })
+          },
+        getMerchantProfile({commit}) {
+            axios
+            .get('/merchant/profile')
+            .then((response) => {
+            commit('setMerchantProfile',response.data)
+              })
+          },
+        getOrdersReceived({commit}) {
+            axios
+            .get('/cartOrder/orderDetails')
+            .then((response) => {
+            commit('ordersReceived',response)
+              })
+          },
+        getListOfProducts({commit}) {
+            axios
+            .get('/products/allProducts')
+            .then((response) => {
+            commit('allProducts',response)
+              })
+          },
+          merchantEdit: (state,params) =>
+              axios
+                .post('/merchant/edit'+state.userAccessToken,{
+                  params
+                })
+                .then(alert("Edit Successfull"))
+                .catch(function (error) {
+                    window.console.log(error);
+                }),
+          addProducts: (newProduct) =>
+              axios
+                .post('/merchant/addProducts'+this.userAccessToken,{
+                  newProduct
+                })
+                .then(alert("Add Successfull"))
+                .catch(function (error) {
+                    window.console.log(error);
+                })
+              },
   getters: {
-    popularProductsGetter(state) {
-      return state.popular;
-    },
-    productDetailsGetter(state) {
-      return state.product;
-    },
-    merchantProductDetailsGetter(state) {
-      return state.merchantProduct;
-    }
+        merchantProductsGetter(state){
+            return state.merchantProducts
+          },
+        merchantOrdersGetter(state){
+            return state.merchantOrders
+          },
+        merchantProfileGetter(state){
+            return state.merchantProfile
+        },
+        getuserAccessToken(state){
+            return state.userAccessToken
+        },
+        getAllProducts(state){
+          return state.products
+        }
   }
 })
