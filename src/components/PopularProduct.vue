@@ -5,6 +5,8 @@
       <br>
       <label class="label-prod">{{product.productName}}</label>
   </div>
+  <button @click="login()">Login</button>
+  <button @click="fb()">fb</button>
   </div>
 </template>
 <script>
@@ -24,6 +26,13 @@ export default {
       // router.push({ path: `/user/${userId}` }) // -> /user/123
 
       this.$router.push({ path: `/product/${prodcutId}` })
+    },
+    login()
+    {
+      this.$store.dispatch('GoogleLogin');  
+    },
+    fb(){
+      this.$store.dispatch('FacebookLogin');
     }
   },
   computed:{

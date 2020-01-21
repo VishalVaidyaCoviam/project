@@ -1,23 +1,32 @@
 <template>
   <div>
-    <h2 style="margin-left:20px;"> 
+    <h2 style="margin-left:20px;">
       <label for>Product Details</label>
     </h2>
-    <div class="flex-container">
-      <div class="flex-1">
+    <div class="flex-container flex-row">
+      <div class="pflex-1">
         <img v-bind:src="productDetailsGetter.data.productImage" alt class="prod-img" />
       </div>
-      <div class="flex-2 content">
-        <table class="tbl-merchant">
+      <div class="pflex-3 content">
+        <div class="flex-container flex-row">
+          <div class="pflex-1 flex-column">
+            <div><label for>Product Name:</label></div>
+            <div><label for="">Product description:</label></div>
+            <div><label for="">Product description:</label></div>
+          </div>
+          <div class="pflex-3 flex-column wrap">
+            <div>{{productDetailsGetter.data.productName}}</div>
+            <div id="desc_div">{{productDetailsGetter.data.productDesc}}</div>
+            <div>{{productDetailsGetter.data.productName}}</div>          
+          </div>
+        </div>
+        <!-- <table class="tbl-merchant">
           <tr>
             <th>
               <label for>Product Name:</label>
             </th>
-            <td >
-              <label
-                for="productName"
-                
-              >{{productDetailsGetter.data.productName}}</label>
+            <td>
+              <label for="productName">{{productDetailsGetter.data.productName}}</label>
             </td>
           </tr>
           <tr>
@@ -34,7 +43,7 @@
               <label for="productName">{{productDetailsGetter.data.productName}}</label>
             </td>
           </tr>
-        </table>
+        </table> -->
       </div>
     </div>
     <h3 style="margin-left:20px;">Merchant Details</h3>
@@ -52,9 +61,14 @@
             <label for>Rating</label>
           </th>
         </tr>
-        <tr v-for="merchant in merchantProductDetailsGetter.data" v-bind:key=merchant.merchantId>
+        <tr v-for="merchant in merchantProductDetailsGetter.data" v-bind:key="merchant.merchantId">
           <td>
-            <input v-model="merchantId" type="radio" name="merchant" v-bind:value="merchant.merchantId" />
+            <input
+              v-model="merchantId"
+              type="radio"
+              name="merchant"
+              v-bind:value="merchant.merchantId"
+            />
             {{merchant.merchantId}}
           </td>
           <td>
@@ -83,17 +97,15 @@ export default {
   data: function() {
     return {
       product: "",
-      productId:"",
+      productId: "",
       merchantId: "1"
     };
   },
   props: {},
-  methods:{
-      addToCart()
-      {
-          window.console.log(this.merchantId);
-
-      }
+  methods: {
+    addToCart() {
+      window.console.log(this.merchantId);
+    }
   },
   created() {
     this.productId = this.$route.params.id;
@@ -113,6 +125,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 @import url("../css/style.css");
+#desc_div {
+  word-break: break-word;
+  width: 45vw;
+}
 .tbl-merchant {
   border-collapse: collapse;
   width: 100%;
@@ -121,13 +137,13 @@ export default {
 td {
   padding: 8px;
   text-align: left;
-  border-bottom: 1px solid grey;
+  /* border-bottom: 1px solid grey; */
 }
 .tbl-merchant > td,
 th {
   padding: 8px;
   text-align: left;
-  border-bottom: 1px solid grey;
+  /* border-bottom: 1px solid grey; */
 }
 .tbl-merchant > tr:hover {
   background-color: #f5f5f5;
@@ -154,6 +170,9 @@ a {
   outline: none;
   -webkit-box-shadow: none;
   box-shadow: none;
+}
+.wrap {
+  flex-wrap: wrap;
 }
 .btn {
   font-size: 18px;
@@ -189,6 +208,16 @@ a {
   display: flex;
   flex-direction: column;
 }
+.pflex-1 {
+  flex-grow: 1;
+}
+.pflex-3 {
+  flex-grow: 1;
+  max-width: 70vw;
+}
+.flex-row {
+  flex-direction: row;
+}
 .flex-container {
   display: flex;
   /* border: 1px solid black; */
@@ -205,14 +234,14 @@ a {
   height: 350px;
 }
 .content {
-  padding-left: 5%;
+  padding-left: 3%;
   padding-top: 80px;
 }
 .tbl {
   height: auto;
   /* width: 90%; */
 
-  border: 1px solid black;
+  /* border: 1px solid black; */
   /* display:flex; */
   /* overflow: hidden; */
   /* table-layout: fixed; */
