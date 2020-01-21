@@ -7,6 +7,7 @@
         <div class="links"> <router-link to="/listOfProduct"> List of Product</router-link> </div>
         <div class="links"> <router-link to="/ordersReceived"> Orders Received</router-link> </div>
         <div class="links"> <router-link to="/merchantProfile">My Profile</router-link> </div>
+        <div class="links"> <router-link to="/merchantSignup">SignUp</router-link></div>
         <router-view/>
     </div>
     </body>

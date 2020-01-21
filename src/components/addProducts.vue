@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-        {{getAllProducts.data}}
+        <!-- {{getAllProducts.data}} -->
         <!-- <div>Select Product <dropdown :options='getAllProducts.data.productName' :selected='getAllProducts.data.productId' v-on:updateOption="methodToRunOnSelect"></dropdown></div> -->
         <div>Select Product<select v-model="selected">
-            <option v-for="value in getAllProducts.data" v-bind:key="value.productId" v-bind:value="value.productId"> {{getAllProducts.data.productName}}</option>
+            <option v-for="value in getAllProducts.data" v-bind:key="value.productId" v-bind:value="value.productId"> {{value.productName}}</option>
         </select></div>
         <div><br></div>
         <div><input type="text" v-model="quantity" placeholder="Quantity"></div>
@@ -41,6 +41,7 @@ import {mapGetters} from 'vuex'
                     var newProduct={'productId' :this.selected, 'quantity': this.quantity , 'price':this.price }
                     var obj= JSON.stringify(newProduct)
                     this.$store.dispatch('addProducts',obj)
+                    this.$router.push({name: 'listOfProduct'})
                 }
             }
         }
@@ -64,4 +65,9 @@ input[type=text]{
     width: 70%;
     background: rgb(243, 224, 224);
 }
+after {
+    content: "";
+    clear: both;
+    display: table;
+  }
 </style>

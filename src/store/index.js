@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import firebase from 'firebase'
+import {Googleprovider} from '../../firebaseConfig'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    userAccessToken:'1',
+    userAccessToken:'',
     merchantProducts:[],
     products:[],
     merchantProfile:{},
@@ -24,9 +26,45 @@ export default new Vuex.Store({
           },
         allProducts(state,data){
             state.products=data
-          }
+          },
+        GoogleMutation(state,token){
+          state.userAccessToken=token
+        }
     },
   actions: {
+    GoogleLogin({commit}){
+      firebase.auth().signInWithPopup(Googleprovider).then(function(result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        window.console.log(token);
+        window.console.log(user);
+        commit('GoogleMutation',token);
+        // ...
+        axios
+        .post('/merchant/registration',{
+          token
+        })
+        .then(window.console.log())
+        .catch(function (error) {
+          window.console.log(error);
+        })
+      }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // The email of the user's account used.
+        var email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        var credential = error.credential;
+        // ...
+        window.console.log(errorCode);
+        window.console.log(errorMessage);
+        window.console.log(email);
+        window.console.log(credential);
+      })
+    },
         getMerchantListOfProducts({commit}){
             axios
             .get('/merchant/listOfProduct')
@@ -66,8 +104,17 @@ export default new Vuex.Store({
                 }),
           addProducts: (newProduct) =>
               axios
-                .post('/merchant/addProducts'+this.userAccessToken,{
+                .post('/merchant/addProducts',{
                   newProduct
+                })
+                .then(alert('Successfull'))
+                .catch(function (error) {
+                    window.console.log(error);
+                }),
+              merchantSignup: (obj) =>
+              axios
+                .post('merchant/registration',{
+                  obj
                 })
                 .then(alert("Add Successfull"))
                 .catch(function (error) {
