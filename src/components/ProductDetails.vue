@@ -13,10 +13,10 @@
             <th>
               <label for>Product Name:</label>
             </th>
-            <td class="flex-container">
+            <td >
               <label
                 for="productName"
-                style="flex-wrap:wrap;"
+                
               >{{productDetailsGetter.data.productName}}</label>
             </td>
           </tr>
@@ -92,6 +92,7 @@ export default {
       addToCart()
       {
           window.console.log(this.merchantId);
+
       }
   },
   created() {
@@ -197,7 +198,7 @@ a {
   /* border: 1px solid black; */
 }
 .flex-2 {
-  flex: 1 0 auto;
+  flex: 2 0 auto;
   /* border: 1px solid black; */
 }
 .prod-img {

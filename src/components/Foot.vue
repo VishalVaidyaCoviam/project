@@ -4,7 +4,7 @@
       <p>
         CUSTOMER CARE
         <br />5758439399
-        <br />customer.care@pikemast.com
+        <br />customer.care@DrunkenSoul.com
       </p>
     </div>
     <div class="flex-1 al-cn">
@@ -21,6 +21,7 @@
       Follow Us
       <br />
     </div>
+    
   </div>
 </template>
 <script>
