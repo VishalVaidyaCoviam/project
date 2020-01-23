@@ -2,7 +2,8 @@
   <div class="flex-container">
     <!-- <div style="flex-basis: 10% align-content: flex-start"><img src="#" alt="abc not" onclick=""></div> -->
     <div class="flex-1 al-cn">
-      <!-- <img src="#" /> -->{{jwttokenGetter}}
+      <!-- <img src="#" /> -->
+      <!-- {{jwttokenGetter}} -->
       <label for="" class="Name" @click="popular">BarleyKart</label>
     </div>
     <div class="flex-3 al-cn">

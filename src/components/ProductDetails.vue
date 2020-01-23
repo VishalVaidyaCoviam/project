@@ -8,7 +8,13 @@
       <div class="pflex-1">
         <!-- {{ productDetailsGetter.data }} -->
         <!-- {{merchantProductDetailsGetter.data}} -->
-        <img v-bind:src="productDetailsGetter.data.productImage" alt class="prod-img" />
+        <img v-bind:src="productDetailsGetter.data.data.productImage" alt class="prod-img" />
+        <br>
+        <!-- <div class="flex-container"> -->
+      <!-- <div class="flex-1 col-three" @click="addToCart">
+        <a class="btn btn-dark-blue">Add to Cart</a>
+      </div> -->
+      <!-- </div> -->
       </div>
       <div class="pflex-3 content">
         <div class="flex-container flex-row">
@@ -16,12 +22,19 @@
             <div><label for>Product Name:</label></div>
             <div><label for="">Product description:</label></div>
             <div><label for="">Product Sell Count:</label></div>
+            <div class="col-three" @click="addToCart">
+              <a class="btn btn-dark-blue">Add to Cart</a>
+            </div>       
           </div>
           <div class="pflex-3 flex-column wrap">
-            <div>{{productDetailsGetter.data.productName}}</div>
-            <div id="desc_div">{{productDetailsGetter.data.productDesc}}</div>
-            <div>{{productDetailsGetter.data.sellCount}}</div>          
+            <div>{{productDetailsGetter.data.data.productName}}</div>
+            <div id="desc_div">{{productDetailsGetter.data.data.productDesc}}</div>
+            <div>{{productDetailsGetter.data.data.sellCount}}</div>   
+            <div class="col-buy" @click="addToCart" style="width:33%;">
+              <a class="btn btn-dark-blue">Buy Now!</a>
+            </div>       
           </div>
+          
         </div>
         <!-- <table class="tbl-merchant">
           <tr>
@@ -48,6 +61,7 @@
           </tr>
         </table> -->
       </div>
+      <!-- <br /> -->
     </div>
     <h3 style="margin-left:20px;">Merchant Details</h3>
     <div class="flex-container flex-column">
@@ -86,10 +100,6 @@
           </td>
         </tr>
       </table>
-      <br />
-      <div class="col-three" @click="addToCart">
-        <a class="btn btn-dark-blue">Add to Cart</a>
-      </div>
       <!-- <button class="btn-blu">Add to Cart</button> -->
     </div>
   </div>
@@ -109,6 +119,29 @@ export default {
   methods: {
     addToCart() {
       window.console.log(this.merchantId);
+      window.console.log(this.productId);
+      
+      if(localStorage.getItem('jwtToken') === null)
+      {
+        let Obj = {
+          merchantId : this.merchantId,
+          productId : this.productId,
+          quantity: "1",
+          UserId:localStorage.getItem('GuestToken')
+        };
+        this.$store.dispatch('AddToCartAction',Obj);
+      }
+      else{
+        let Obj = {
+          merchantId : this.merchantId,
+          productId : this.productId,
+          quantity: "1",
+          token:localStorage.getItem('jwtToken')
+        };
+        window.console.log(Obj.token);
+        this.$store.dispatch('AddToCartAction',Obj);
+      } 
+      // window.console.log()
     }
   },
   created() {
@@ -133,6 +166,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 @import url("../css/style.css");
+.col-six > a.btn {
+  width: 10%;
+}
 .footer {
   position: static;
 }
@@ -188,7 +224,7 @@ a {
 .btn {
   font-size: 18px;
   white-space: nowrap;
-  width: 15%;
+  width: 90%;
   border-radius: 5%;
   padding: 0.8em 1.5em;
   font-family: Open Sans, Helvetica, Arial, sans-serif;
@@ -209,7 +245,7 @@ a {
     height: 25px;
 } */
 .col-three {
-  width: 5px;
+  width: 100%;
 }
 .flex-column > div {
   width: 100%;

@@ -5,7 +5,7 @@
     <h2 style="margin-left:20px;">
       Product Details
     </h2>
-      </div>searchStringListGetter
+      </div>
     </div>
       <!-- {{searchStringListGetter}} -->
   <div v-for="product in searchStringListGetter.data" v-bind:key="product.productId" class="prod-div al-cn bd" @click=productDetails(product.productId)>

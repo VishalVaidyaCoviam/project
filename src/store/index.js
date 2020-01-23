@@ -22,7 +22,8 @@ export default new Vuex.Store({
     jwttoken:'',
     searchString: "",
     searchStringList: {},
-    type:""
+    type:"",
+    response:{}
   },
   mutations: {
     popularProductsMutation(state, data) {
@@ -56,9 +57,20 @@ export default new Vuex.Store({
     },
     typeMutation(state,data) {
       state.type = data;
+    },
+    ResponseMutation(state,data) {
+      state.response = data;
     }
   },
   actions: {
+    AddToCartAction({commit},Obj){
+      window.console.log(Obj)
+      axios.post(base_path+'/cartOrder/addToCart',Obj)
+      .then(function(response) {
+        window.console.log(response);
+        commit('ResponseMutation',response);
+      });
+    },
     setStateAction({commit},type){
       commit('typeMutation',type);
     },
@@ -115,6 +127,7 @@ export default new Vuex.Store({
         .then(function (response){
           window.console.log(response);
           commit('loginMutation',response.data.data);
+          localStorage.setItem('jwtToken',response.data.data);
         })
         // ...
       }).catch(function (error) {
