@@ -2,23 +2,31 @@
   <div class="flex-container">
     <!-- <div style="flex-basis: 10% align-content: flex-start"><img src="#" alt="abc not" onclick=""></div> -->
     <div class="flex-1 al-cn">
-      <img src="#" />
+      <!-- <img src="#" /> -->{{jwttokenGetter}}
+      <label for="" class="Name" @click="popular">BarleyKart</label>
     </div>
     <div class="flex-3 al-cn">
       <input type="text" v-model="search" name="Search" placeholder="Search.." />
-      <button name="Submit" @click="callSearch()" value="Search">SUbmit</button>
+      <button name="button" @click="callSearch()" value="Search">SEARCH</button>
     </div>
     <div class="flex-1 al-cn">
       <img :src="cart_image" class="head_cart" />
     </div>
-    <div class="flex-1 al-cn">
+    <div class="flex-1">
       <div class="dropdown">
-          <img :src="profilePic" class="dropbtn" />
+        <img :src="profilePic" class="dropbtn" />
         <!-- <button class="dropbtn">Dropdown</button> -->
         <div class="dropdown-content">
-          <a href="#">Link 1</a>
-          <a href="#">Link 2</a>
-          <a href="#">Link 3</a>
+          <div v-if="jwttokenGetter === ''">
+          <a @click="login">Login</a>
+          <a href="#">Signup</a>
+          </div>
+          <div v-else>
+            <a >Profile</a>
+            <a >Login History</a>
+            <a >Order History</a>
+          <a >Logout</a>
+          </div>
         </div>
       </div>
     </div>
@@ -27,23 +35,48 @@
 <script>
 import Alcohol from "../image/beer-mug.svg";
 import ProfilePic from "../image/user.svg";
+import { mapGetters } from 'vuex';
 export default {
   data: function() {
     return {
+      search: "",
       cart_image: Alcohol,
-      profilePic : ProfilePic
+      profilePic: ProfilePic
     };
+  },
+  methods: {
+    popular(){
+      this.$router.push({path : '/popular'})
+    },
+    callSearch() {
+      window.console.log(this.search);
+      this.$store.dispatch("setSearchStringAction", this.search);
+      this.$route.name != 'Search' ? this.$router.push({ path: `/search` }) : '';
+    },
+    login() {
+      this.$router.push({ path: `/login` });
+    }
+  },
+  computed :{
+    ...mapGetters(['jwttokenGetter'])
   }
 };
 </script>
 <style scoped>
+.Name {
+  font-size: 40px;
+  /* font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif; */
+  font-family:  fantasy;	
+  margin-bottom: 15px;
+  /* font-weight: 600; */
+}
 .dropbtn {
   /* background-color: #2196f3; */
   color: white;
   /* padding: 16px; */
   font-size: 16px;
   /* width: 100%; */
-  height:50px; 
+  height: 50px;
   border: none;
   cursor: pointer;
 }
@@ -58,7 +91,9 @@ export default {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  /* margin-right: 200px;  */
+
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 
@@ -69,14 +104,16 @@ export default {
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
 
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
 /* .dropdown:hover .dropbtn { */
-  /* background-color: #2196f3; */
+/* background-color: #2196f3; */
 /* } */
 .head_cart {
   height: 50px;
@@ -86,6 +123,7 @@ export default {
 }
 .flex-container {
   display: flex;
+  border-bottom: 1px solid grey;
   /* flex-direction: row; */
   flex-wrap: wrap;
   /* background-color: rgb(221, 181, 158); */
@@ -117,7 +155,7 @@ input[type="text"] {
   /* float: left; */
   width: 70%;
   background: #f1f1f1;
-  height: 37px;
+  height: 35px;
   border: 1px solid grey;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -137,5 +175,4 @@ button {
 button:hover {
   background: #0b7dda;
 }
-
 </style>

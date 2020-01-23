@@ -1,10 +1,13 @@
 <template>
   <div>
     <h2 style="margin-left:20px;">
-      <label for>Product Details</label>
+      Product Details
     </h2>
+    <!-- {{this.$store.state.product}} -->
     <div class="flex-container flex-row">
       <div class="pflex-1">
+        <!-- {{ productDetailsGetter.data }} -->
+        <!-- {{merchantProductDetailsGetter.data}} -->
         <img v-bind:src="productDetailsGetter.data.productImage" alt class="prod-img" />
       </div>
       <div class="pflex-3 content">
@@ -12,12 +15,12 @@
           <div class="pflex-1 flex-column">
             <div><label for>Product Name:</label></div>
             <div><label for="">Product description:</label></div>
-            <div><label for="">Product description:</label></div>
+            <div><label for="">Product Sell Count:</label></div>
           </div>
           <div class="pflex-3 flex-column wrap">
             <div>{{productDetailsGetter.data.productName}}</div>
             <div id="desc_div">{{productDetailsGetter.data.productDesc}}</div>
-            <div>{{productDetailsGetter.data.productName}}</div>          
+            <div>{{productDetailsGetter.data.sellCount}}</div>          
           </div>
         </div>
         <!-- <table class="tbl-merchant">
@@ -61,15 +64,16 @@
             <label for>Rating</label>
           </th>
         </tr>
-        <tr v-for="merchant in merchantProductDetailsGetter.data" v-bind:key="merchant.merchantId">
+        <!-- <tr> -->
+        <tr v-for="merchant in merchantProductDetailsGetter.data.data" v-bind:key="merchant.merchantId">
           <td>
             <input
               v-model="merchantId"
               type="radio"
               name="merchant"
               v-bind:value="merchant.merchantId"
-            />
-            {{merchant.merchantId}}
+            /> 
+            <!-- {{merchant.merchantId}} -->
           </td>
           <td>
             <label>{{merchant.merchantName}}</label>
@@ -111,13 +115,17 @@ export default {
     this.productId = this.$route.params.id;
   },
   computed: {
-    ...mapGetters(["merchantProductDetailsGetter", "productDetailsGetter"])
+    ...mapGetters(["productDetailsGetter","merchantProductDetailsGetter"])
+    // get(){
+    //   return this.$store.state.product;
+    // }
+    // ...mapGetters(["merchantProductDetailsGetter", "productDetailsGetter"])
   },
   mounted() {
-    // this.$store.dispatch(['productDetailsAction'],prodcutId);
-    this.$store.dispatch("productDetailsAction");
-    // this.$store.dispatch(['merchantProductDetailsAction'],prodcutId);
-    this.$store.dispatch("merchantProductDetailsAction");
+    this.$store.dispatch('productDetailsAction',this.productId);
+    // this.$store.dispatch("productDetailsAction");
+    this.$store.dispatch('merchantProductDetailsAction',this.productId);
+    // this.$store.dispatch("merchantProductDetailsAction");
   }
 };
 </script>
@@ -125,6 +133,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 @import url("../css/style.css");
+.footer {
+  position: static;
+}
 #desc_div {
   word-break: break-word;
   width: 45vw;
