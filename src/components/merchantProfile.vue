@@ -3,23 +3,21 @@
     <div class="card">
         <img :src="pic" alt="" style="width:100%" class="image">
         <h1>{{merchantProfileGetter.merchantName}}</h1>
-        <p class="title"> Seller at BarleyKart</p>
+        <h3 class="title"> Seller at BarleyKart</h3>
         <div class="row">
-            <div>Number : </div>
-            <div>{{merchantProfileGetter.mobileNo}}</div>
-        </div><br>
-        <div class="row">
-            <div>Email : </div>
-            <div>{{merchantProfileGetter.merchantEmail}}</div>
-        </div><br>
-        <div class="row">
-            <div>Address : </div>
-            <div>{{merchantProfileGetter.merchantAddress}}</div>
-        </div><br>
-        <div class="row">    
-            <div>Rating : </div>
-            <div>{{merchantProfileGetter.merchantRating}}</div>
-        </div><br>
+            <div class="column">
+                <div>Number : </div><br>
+                <div>Email : </div><br>
+                <div>Address : </div><br>
+                <div>Rating : </div><br>
+            </div>
+            <div class="column">
+                <div>{{merchantProfileGetter.mobileNo}}</div><br>
+                <div>{{merchantProfileGetter.merchantEmail}}</div><br>
+                <div>{{merchantProfileGetter.merchantAddress}}</div><br>
+                <div>{{merchantProfileGetter.merchantRating}}</div><br>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -56,7 +54,7 @@ export default {
     }
     .card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        max-width: 300px;
+        max-width: 500px;
         margin: auto;
         text-align: center;
         margin-top: 100px;
@@ -70,7 +68,11 @@ export default {
     .row{
         display:flex;
         flex-direction: row;
-        justify-content:center;
+        justify-content:space-around;
+    }
+    .column{
+        display:flex;
+        flex-direction: column;
     }
 
 </style>
