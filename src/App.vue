@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <!-- <Head></Head> -->
-      <router-link to="/merchant">Merchant</router-link>
-    <router-view/>
+    <Head></Head>
+      <router-view/>
   </div>
 </template>
 <style>
@@ -15,11 +14,12 @@
 }
 </style>
 <script>
-// import Head from '@/components/Header.vue';
+import Head from '@/components/merchantHeader.vue';
+// import Home from '@/components/merchanthome.vue'
 export default
 {
-  // components : {
-  //   Head
-  // }
+  components : {
+     Head
+   }
 }
 </script>

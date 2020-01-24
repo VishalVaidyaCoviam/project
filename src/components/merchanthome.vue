@@ -1,47 +1,49 @@
 <template>
 <div class="merchant">
-    <h1 > Merchant </h1>
-    <body>
-    <div class="outside">
-        <div class="links"> <router-link to="/addProducts"> Add Product</router-link> </div>
-        <div class="links"> <router-link to="/listOfProduct"> List of Product</router-link> </div>
-        <div class="links"> <router-link to="/ordersReceived"> Orders Received</router-link> </div>
-        <div class="links"> <router-link to="/merchantProfile">My Profile</router-link> </div>
-        <div class="links"> <router-link to="/merchantSignup">SignUp</router-link></div>
-        <router-view/>
+    <div class="card">
+    <div class="container">
+        <router-link to="/addProducts" tag="h1">Add Product</router-link>
+        <p>Click to add products</p> 
     </div>
-    </body>
+    </div>
+    <div class="card">
+    <div class="container">
+        <router-link to="/listOfProduct" tag="h1">My Stock</router-link>
+        <p>Click to view stock</p> 
+    </div>
+    </div>
+    <div class="card">
+    <div class="container">
+        <router-link to="/ordersReceived" tag="h1">Orders Received</router-link>
+        <p>View received orders</p> 
+    </div>
+    </div>
 </div>
 </template>
 
-<style>
-h1{
-    background-color: rgb(166, 212, 233);
-    align-self: center;
-    font-style: italic;
-    font-size: 50px;
+<style scoped>
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.5s;
+    width: 40%;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: whitesmoke;
 }
-.outside{
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+    padding: 2px 16px;
+}
+.merchant{
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    border-style: double;
-    border-radius: 10px;
-    align-items: center;
-    background-color: rosybrown;
-    height: 150px;
-
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 100px;
 }
-
-.links{
-    background-color: rgb(166, 212, 233);
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 30px;
-    text-shadow: 3px 2px red;
-    font-style: italic;
-    text-align: center;
-    height: 50px;
-}
-
 
 </style>

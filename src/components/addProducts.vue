@@ -1,25 +1,42 @@
 <template>
+<div class="al-cn">
+    <br><div class="header">Add Stock</div>
     <div class="container">
-        <!-- {{getAllProducts.data}} -->
-        <!-- <div>Select Product <dropdown :options='getAllProducts.data.productName' :selected='getAllProducts.data.productId' v-on:updateOption="methodToRunOnSelect"></dropdown></div> -->
-        <div>Select Product<select v-model="selected">
-            <option v-for="value in getAllProducts.data" v-bind:key="value.productId" v-bind:value="value.productId"> {{value.productName}}</option>
-        </select></div>
+        <div><br>
+        <table>
+            <br>
+            <tr>
+                <td>Category</td>
+                <td><select v-model="selectedcategory">
+                    <option v-for="valueCategory in getAllCategories.data" v-bind:key="valueCategory.categoryId" v-bind:value="valueCategory.categoryId" @select="findProducts()"> {{valueCategory.categoryName}}</option>
+                    </select>
+                </td>
+            </tr><br>
+            <tr>
+                <td>Product</td>
+                <td><select v-model="selectedproduct">
+                    <option v-for="valueProduct in getAllProducts.data" v-bind:key="valueProduct.productId" v-bind:value="valueProduct.productId" > {{valueProduct.productName}}</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        </div>
         <div><br></div>
-        <div><input type="text" v-model="quantity" placeholder="Quantity"></div>
+        <div><input type="number" v-model="quantity" placeholder="Quantity"></div>
         <div><br></div>
-        <div><input type="text" v-model="price" placeholder="Price"></div>
+        <div><input type="number" v-model="price" placeholder="Price"></div>
         <div><br></div>
-        <div><button type="submit" @click="sendProducts()">Submit</button></div>
+        <div><button type="submit" @click="sendProducts()">Submit</button></div><br>
     </div>
+</div>
 </template>
 <script>
 import {mapGetters} from 'vuex'
-//import dropdown from 'vue-dropdowns'
     export default {
         data() {
               return {
-                selected:'',
+                selectedcategory:'',
+                selectedproduct:'',
                 quantity:'',
                 price:''
             }
@@ -27,47 +44,83 @@ import {mapGetters} from 'vuex'
             },
 
         mounted() {
-                this.$store.dispatch('getListOfProducts');    
+                // this.$store.dispatch('getListOfProducts');   
+                this.$store.dispatch('getListOfCategories');
             },
         computed: {
                 ...mapGetters (['getAllProducts']),
+                ...mapGetters (['getuserAccessToken']),
+                ...mapGetters (['getAllCategories'])
                 },
-        // components: {
-        //         'dropdown':dropdown
-         //   },
         methods:{ 
+                findProducts(){
+                    this.$store.dispatch('getListOfProducts',this.selectedcategory);
+                },
     
                 sendProducts(){
-                    var newProduct={'productId' :this.selected, 'quantity': this.quantity , 'price':this.price }
-                    var obj= JSON.stringify(newProduct)
-                    this.$store.dispatch('addProducts',obj)
+                    var newProduct={'token':this.getuserAccessToken,'productId' :this.selected, 'quantity': this.quantity , 'price':this.price }
+                    this.$store.dispatch('addProducts',newProduct)
                     this.$router.push({name: 'listOfProduct'})
                 }
             }
         }
 </script>
 <style scoped>
-.container{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    background-color: bisque;
-    justify-content: space-between;
-}
-.container > div {
-  text-align: center;
-  float:unset;
-} 
-input[type=text]{
-    padding: 10px;
-    font-size:20px;
-    float:none;
-    width: 70%;
-    background: rgb(243, 224, 224);
-}
-after {
-    content: "";
-    clear: both;
-    display: table;
-  }
+    .container{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        background-color: white;
+        justify-content: center;
+        width: 60%;
+        border: 2px solid grey;
+        border-radius: 20px;
+        margin-top: 30px;
+        
+    }
+    .al-cn{
+        text-align: -webkit-center;
+    }
+    .container > div {
+        text-align: center;
+        float:unset;
+        font-size:20px;
+        margin-left: 50px;
+    } 
+    input[type=number]{
+        padding: 10px;
+        font-size:20px;
+        float:none;
+        width: 70%;
+        background-color: rgb(214, 214, 214);
+    }
+    select{
+        width: 520px;
+        height: 40px; 
+        background-color: rgb(214, 214, 214);
+
+    }
+    after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    button {
+        padding: 10px;
+        background: dodgerblue;
+        color: white;
+        font-size:20px;
+        border: 1px solid grey;
+        cursor: pointer;
+        border-radius: 5px;
+        opacity: 0.8;
+    }
+    button:hover {
+        opacity:1;
+    }
+    .header{
+        font-family: "Times New Roman", Times, serif;
+        font-style: italic;
+        font-size: 40px;
+    }
 </style>

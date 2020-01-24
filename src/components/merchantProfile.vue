@@ -1,37 +1,39 @@
 <template>
-<div class="profile">
-    <div><img src='' alt="No Image"></div>
-    <div class="details">
-        <table>
-            <tr>
-                <td>Name :</td>
-                <td>{{merchantProfileGetter.merchantName}}</td>
-            </tr>
-            <tr>
-                <td>Mobile:</td> 
-                <td>{{merchantProfileGetter.mobileNo}}</td>
-            </tr>
-            <tr>
-                <td>Email: </td>
-                <td>{{merchantProfileGetter.merchantEmail}}</td>
-            </tr>
-            <tr>
-                <td>Adderss:</td> 
-                <td>{{merchantProfileGetter.merchantAddress}}</td>
-            </tr>
-            <tr>
-                <td>Rating: </td>
-                <td>{{merchantProfileGetter.merchantRating}}</td>
-            </tr>
-        </table>
+<div class="al-cn">
+    <div class="card">
+        <img :src="pic" alt="" style="width:100%" class="image">
+        <h1>{{merchantProfileGetter.merchantName}}</h1>
+        <p class="title"> Seller at BarleyKart</p>
+        <div class="row">
+            <div>Number : </div>
+            <div>{{merchantProfileGetter.mobileNo}}</div>
+        </div><br>
+        <div class="row">
+            <div>Email : </div>
+            <div>{{merchantProfileGetter.merchantEmail}}</div>
+        </div><br>
+        <div class="row">
+            <div>Address : </div>
+            <div>{{merchantProfileGetter.merchantAddress}}</div>
+        </div><br>
+        <div class="row">    
+            <div>Rating : </div>
+            <div>{{merchantProfileGetter.merchantRating}}</div>
+        </div><br>
     </div>
 </div>
 
 </template>
 
 <script>
+import user from "../assets/user.svg";
 import {mapGetters} from 'vuex'
 export default {
+    data: () => {
+        return{
+            pic:user
+        }
+    },
     mounted() {
     this.$store.dispatch('getMerchantProfile');
     },
@@ -40,19 +42,35 @@ export default {
     }
 }
 </script>
-<style>
-    .profile{
-        background-origin: padding-box;
-        display: flex;
-        flex-direction: column;
-        flex-wrap:wrap;
-        background-color: rgb(240, 230, 230);
-        justify-content: center;
-        align-items: stretch;
+<style scoped>
+    .al-cn{
+        text-align: -webkit-center;
     }
-    .details{
-        font-size: 20px;
-        font-weight: bold;
+
+    .image{
+    height: 100px;
+    width: 100px;
+    margin-right: 20px;
+    justify-content: space-around;
+    cursor: pointer;
+    }
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        max-width: 300px;
         margin: auto;
+        text-align: center;
+        margin-top: 100px;
+        background-color:whitesmoke;
+        }
+
+    .title {
+        color: grey;
+        font-size: 18px;
+        }
+    .row{
+        display:flex;
+        flex-direction: row;
+        justify-content:center;
     }
+
 </style>
