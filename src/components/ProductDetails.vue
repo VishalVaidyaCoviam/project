@@ -3,6 +3,7 @@
     <h2 style="margin-left:20px;">
       Product Details
     </h2>
+    
     <!-- {{this.$store.state.product}} -->
     <div class="flex-container flex-row">
       <div class="pflex-1">
@@ -148,13 +149,14 @@ export default {
     this.productId = this.$route.params.id;
   },
   computed: {
-    ...mapGetters(["productDetailsGetter","merchantProductDetailsGetter"])
+    
     // get(){
     //   return this.$store.state.product;
     // }
-    // ...mapGetters(["merchantProductDetailsGetter", "productDetailsGetter"])
+    ...mapGetters(["merchantProductDetailsGetter", "productDetailsGetter"])
   },
   mounted() {
+    
     this.$store.dispatch('productDetailsAction',this.productId);
     // this.$store.dispatch("productDetailsAction");
     this.$store.dispatch('merchantProductDetailsAction',this.productId);

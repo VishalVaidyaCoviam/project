@@ -1,6 +1,6 @@
 <template>
   <div class="al-cn">
-    <h2>Login Form</h2>
+    <h2>Customer Signup</h2>
 
     <form method="post" class="frm">
       <div class="imgcontainer">
@@ -8,34 +8,33 @@
       </div>
 
       <div class="container">
-        <label for="uname">
+          <label for="uname">
           <b>Username</b>
+        </label>
+        <input v-model="name" type="text" placeholder="Enter Username" name="uname" required />
+        <label for="uname">
+          <b>Email</b>
         </label>
         <input v-model="email" type="text" placeholder="Enter Username" name="uname" required />
 
         <label for="psw">
           <b>Password</b>
         </label>
-        <input v-model="pass" type="password" placeholder="Enter Password" name="psw" required />
+        <input v-model="pass1" type="password" placeholder="Enter Password" name="psw" required />
         <label for="psw">
           <b>Password</b>
         </label>
-        <input v-model="pass" type="password" placeholder="Enter Password" name="psw" required />
-        <div style="margin-top:10px;">
-        <!-- <label style="float:left;">Type:</label> -->
-        <label class="radio">
-          <input v-model="type" type="radio" name="options" v-bind:value="0" />
-          <span>Customer</span>
-        </label>
-        <label class="radio">
-          <input v-model="type" type="radio" name="options" v-bind:value="1"/>
-          <span>Merchant</span>
-        </label>
-        </div>
+        <input v-model="pass2" type="password" placeholder="Enter Password" name="psw" required />
         <button type="button" @click="login">Login</button>
-        <hr style="margin-top:5px;margin-bottom:5px">
-        <img :src="gmail" alt="" class="gmail" @click="GmailLogin">
-        <img :src="facebook" alt="" class="facebook" @click="FacebookLogin">
+        <!-- <div style="margin-top:10px;"> -->
+        <!-- <label style="float:left;">Type:</label> -->
+        
+        <!-- </div> -->
+        <!-- <button type="button" @click="login">Login</button> -->
+        
+        <!-- <hr style="margin-top:5px;margin-bottom:5px"> -->
+        <!-- <img :src="gmail" alt="" class="gmail" @click="GmailLogin"> -->
+        <!-- <img :src="facebook" alt="" class="facebook" @click="FacebookLogin"> -->
       </div>
     </form>
   </div>
@@ -50,10 +49,12 @@ export default {
     return {
       profilePic: ProfilePic,
       type: 0,
-      pass: "",
+      pass1: "",
+      pass2: "",
       email: "",
       gmail: Gmail,
-      facebook : Facebook
+      facebook : Facebook,
+      name: ""
     };
   },
   methods: {

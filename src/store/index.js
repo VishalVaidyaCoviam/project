@@ -23,7 +23,8 @@ export default new Vuex.Store({
     searchString: "",
     searchStringList: {},
     type:"",
-    response:{}
+    response:{},
+    cart:{}
   },
   mutations: {
     popularProductsMutation(state, data) {
@@ -60,9 +61,19 @@ export default new Vuex.Store({
     },
     ResponseMutation(state,data) {
       state.response = data;
+    },
+    CartMutation(state,data){
+      state.cart = data;
+      window.console.log(data);
     }
   },
   actions: {
+    CartPageAction({commit}){
+      window.console.log("in cart");
+      axios
+        .get(base_path+"/cartOrder/cart/"+localStorage.getItem('jwtToken'))
+        .then(response => (commit('CartMutation', response)))
+    },
     AddToCartAction({commit},Obj){
       window.console.log(Obj)
       axios.post(base_path+'/cartOrder/addToCart',Obj)
@@ -232,6 +243,9 @@ export default new Vuex.Store({
     },
     jwttokenGetter(state){
       return state.jwttoken;
+    },
+    cartGetter(state){
+      return state.cart;
     }
   }
 })

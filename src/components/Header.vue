@@ -11,7 +11,7 @@
       <button name="button" @click="callSearch()" value="Search">SEARCH</button>
     </div>
     <div class="flex-1 al-cn">
-      <img :src="cart_image" class="head_cart" />
+      <img :src="cart_image" class="head_cart" @click="cart()"/>
     </div>
     <div class="flex-1">
       <div class="dropdown">
@@ -46,6 +46,9 @@ export default {
     };
   },
   methods: {
+    cart(){
+      this.$router.push({path:'/cart'})
+    },
     popular(){
       this.$router.push({path : '/popular'})
     },

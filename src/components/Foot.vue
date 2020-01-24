@@ -4,7 +4,7 @@
       <p>
         CUSTOMER CARE
         <br />5758439399
-        <br />customer.care@DrunkenSoul.com
+        <br />customer.care@BarleyKart.com
       </p>
     </div>
     <div class="flex-1 al-cn">
