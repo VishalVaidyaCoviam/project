@@ -8,10 +8,10 @@
       </div>
 
       <div class="container">
-          <label for="uname">
-          <b>Username</b>
+        <label for="uname">
+          <b>User Name</b>
         </label>
-        <input v-model="name" type="text" placeholder="Enter Username" name="uname" required />
+        <input v-model="Uname" type="text" placeholder="Enter Username" name="uname" required />
         <label for="uname">
           <b>Email</b>
         </label>
@@ -25,26 +25,44 @@
           <b>Password</b>
         </label>
         <input v-model="pass2" type="password" placeholder="Enter Password" name="psw" required />
-        <button type="button" @click="login">Login</button>
-        <!-- <div style="margin-top:10px;"> -->
-        <!-- <label style="float:left;">Type:</label> -->
-        
-        <!-- </div> -->
-        <!-- <button type="button" @click="login">Login</button> -->
-        
-        <!-- <hr style="margin-top:5px;margin-bottom:5px"> -->
-        <!-- <img :src="gmail" alt="" class="gmail" @click="GmailLogin"> -->
-        <!-- <img :src="facebook" alt="" class="facebook" @click="FacebookLogin"> -->
+        <!-- <input type="file" name="" id=""> -->
+        <!-- <VueBase64FileUpload
+          class="v1"
+          accept="image/png, image/jpeg"
+          image-class="v1-image"
+          input-class="v1-input"
+          :max-size="customImageMaxSize"
+          @size-exceeded="onSizeExceeded"
+          @file="onFile"
+          @load="onLoad"
+        />
+        <div class="vue-base64-file-upload">
+          <img v-show="previewImage && !disablePreview" :src="previewImage" :class="imageClass" />
+          <div class="vue-base64-file-upload-wrapper" :style="wrapperStyles">
+            <input type="file" @change="onChange" :style="fileInputStyles" :accept="accept" />
+            <input
+              type="text"
+              :class="inputClass"
+              :style="textInputStyles"
+              :value="fileName || file && file.name"
+              :placeholder="placeholder"
+              disabled
+            />
+          </div>
+        </div> -->
+        <label for="">Upload Profile Picture</label>
+        <input type="file" name="" id="" @change="fileUpload">
+        <button type="button" @click="signup">Sing Up</button>
       </div>
     </form>
   </div>
 </template>
 <script>
 import ProfilePic from "../image/user.svg";
-import Gmail from "../image/gmail.svg";
-import Facebook from "../image/facebook.svg";
+// import VueBase64FileUpload from "vue-base64-file-upload";
+
 export default {
-    name: "CustomerSignup",
+  name: "CustomerSignup",
   data: function() {
     return {
       profilePic: ProfilePic,
@@ -52,40 +70,64 @@ export default {
       pass1: "",
       pass2: "",
       email: "",
-      gmail: Gmail,
-      facebook : Facebook,
-      name: ""
+      Uname: "",
+      Baseimage: null
     };
   },
   methods: {
-    login() {
-        window.console.log(this.email);
-        window.console.log(this.pass);
-        window.console.log(this.type);
-        this.$store.dispatch('login',this.email,this.pass,this.type);
+    signup() {
+      // window.console.log(this.pass1+" "+this.pass2+" "+this.email+" "+this.Uname+" ");
+      window.console.log(this.Baseimage);
+      var reader = new FileReader();
+      let path = "";
+      
+      reader.onloadend = function () {
+    // Since it contains the Data URI, we should remove the prefix and keep only Base64 string
+    var b64 = reader.result;
+    this.Baseimage = b64;
+    reader.readAsDataURL(this.Baseimage);
+    // .replace(/^data:.+;base64,/, '');
+    window.console.log(this.Baseimage); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
+  };
+  this.Baseimage = path;
+  window.console.log(this.Baseimage);
     },
-    changeRadio() {
-
-    },
-    GmailLogin(){
-        this.$store.dispatch('GoogleLogin');  
-    },
-    FacebookLogin(){
-      this.$store.dispatch('FacebookLogin');
+    fileUpload(e){
+      window.console.log(e.target.files[0]);
+      this.Baseimage = e.target.files[0];
+      // window.console.log(reader)
     }
+    // },
+    // onFile(file) {
+    //   window.console.log(file); // file object
+    // },
+    // onLoad(dataUri) {
+    //   window.console.log(dataUri); // data-uri string
+    // },
+    // onSizeExceeded(size) {
+    //   alert(
+    //     `Image ${size}Mb size exceeds limits of ${this.customImageMaxSize}Mb!`
+    //   );
+    // }
+  },
+  components: {
+    // VueBase64FileUpload
   }
 };
 </script>
 <style scoped>
+.frm {
+  height: 600px;
+}
 .gmail {
-    /* float: left; */
-    margin-right: 100px;
-    height: 45px;
+  /* float: left; */
+  margin-right: 100px;
+  height: 45px;
 }
 .facebook {
-    /* float: right; */
-    margin-left: 10px;
-    height: 45px;
+  /* float: right; */
+  margin-left: 10px;
+  height: 45px;
 }
 .al-cn {
   /* align-content: center; */

@@ -20,7 +20,7 @@
         <div class="dropdown-content">
           <div v-if="jwttokenGetter === ''">
           <a @click="login">Login</a>
-          <a href="#">Signup</a>
+          <a @click="signup">Signup</a>
           </div>
           <div v-else>
             <a >Profile</a>
@@ -58,7 +58,10 @@ export default {
       this.$route.name != 'Search' ? this.$router.push({ path: `/search` }) : '';
     },
     login() {
-      this.$router.push({ path: `/login` });
+      this.$route.name != 'login' ? this.$router.push({ path: `/login` }) : '';
+    },
+    signup() {
+      this.$route.name != 'CustomerSignup' ? this.$router.push({ path: `/SignUp` }) : '';
     }
   },
   computed :{

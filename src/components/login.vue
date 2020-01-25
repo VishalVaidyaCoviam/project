@@ -41,6 +41,7 @@ import ProfilePic from "../image/user.svg";
 import Gmail from "../image/gmail.svg";
 import Facebook from "../image/facebook.svg";
 export default {
+  name: 'login',
   data: function() {
     return {
       profilePic: ProfilePic,
