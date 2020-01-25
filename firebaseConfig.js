@@ -14,10 +14,20 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
+<<<<<<< HEAD
 const auth = firebase.auth()
 var Googleprovider = new firebase.auth.GoogleAuthProvider();
 var Facebookprovider = new firebase.auth.FacebookAuthProvider();
 // Googleprovider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+=======
+
+const auth = firebase.auth()
+var Googleprovider = new firebase.auth.GoogleAuthProvider();
+
+var Facebookprovider = new firebase.auth.FacebookAuthProvider();
+// Googleprovider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
+>>>>>>> d0cefc6d50f71b11c43387a5b5f571cc103a33fd
 export {
     auth,
     Googleprovider,
