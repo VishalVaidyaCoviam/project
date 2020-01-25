@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import firebase from 'firebase'
 
-const base_path = 'http://10.177.69.105:8090';
+const base_path = 'http://10.177.68.5:8090';
 // const base_path = 'http://localhost:3000';
 import {
   Googleprovider,
@@ -71,12 +71,12 @@ export default new Vuex.Store({
     CartPageAction({commit}){
       window.console.log("in cart");
       axios
-        .get(base_path+"/cartOrder/cart/"+localStorage.getItem('jwtToken'))
+        .get(base_path+"/cartorderservice/cartOrder/cart/"+localStorage.getItem('jwtToken'))
         .then(response => (commit('CartMutation', response)))
     },
     AddToCartAction({commit},Obj){
       window.console.log(Obj)
-      axios.post(base_path+'/cartOrder/addToCart',Obj)
+      axios.post(base_path+'/cartorderservice/cartOrder/addToCart',Obj)
       .then(function(response) {
         window.console.log(response);
         commit('ResponseMutation',response);
@@ -100,7 +100,7 @@ export default new Vuex.Store({
       window.console.log()
 
       // window.console.log(str);
-      axios.post(base_path+'/solrsearch/search', {
+      axios.post(base_path+'/solrsearchservice/solrsearch/search', {
           searchString: state.searchString
         })
         .then(function (response) {
@@ -111,7 +111,7 @@ export default new Vuex.Store({
     login({commit},Obj){
       // window.console.log(Obj.email + " "+Obj.password+" "+Obj.role);
       axios
-        .post(base_path+'/login/user',Obj)
+        .post(base_path+'/loginservice/login/user',Obj)
         .then(function (response){
           commit('loginMutation',response.data.data);
         })
@@ -130,7 +130,7 @@ export default new Vuex.Store({
         window.console.log(user);
         // commit('GoogleMutation', idToken);
         axios
-        .post(base_path+'/login/getGoogleDetailsFromWeb',{
+        .post(base_path+'/loginservice/login/getGoogleDetailsFromWeb',{
           accesstoken: idToken,
           role:state.type,
           type: "web"
@@ -169,7 +169,7 @@ export default new Vuex.Store({
         // window.console.log(user);
         // commit('FacebookMutation', idToken);
         axios
-        .post(base_path+'/login/getFacebookDetails',{
+        .post(base_path+'/loginservice/login/getFacebookDetails',{
           accesstoken: idToken,
           role:state.role,
           type: "web"
@@ -198,7 +198,7 @@ export default new Vuex.Store({
       commit
     }) {
       axios
-        .get(base_path+"/solrsearch/popular")
+        .get(base_path+"/solrsearchservice/solrsearch/popular")
         .then(response => (commit('popularProductsMutation', response)))
     },
     productDetailsAction({
@@ -208,7 +208,7 @@ export default new Vuex.Store({
       // var res;
       // window.console.log(pro);
       axios
-        .get(base_path+"/product/details/"+pro)
+        .get(base_path+"/productservice/product/details/"+pro)
         // .get(base_path+"/product/details")
         .then(response => (
           // window.console.log(response);
@@ -223,7 +223,7 @@ export default new Vuex.Store({
       var pro = productId;
       window.console.log(pro);
       axios
-        .get(base_path+"/merchant/listOfMerchant/"+pro)
+        .get(base_path+"/merchantservice/merchant/listOfMerchant/"+pro)
         // .get("/merchant/product")
         .then(response => (commit('merchantProductDetailsMutation', response)))
     }

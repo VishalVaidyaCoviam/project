@@ -24,32 +24,14 @@
         <label for="psw">
           <b>Password</b>
         </label>
+        <br>
         <input v-model="pass2" type="password" placeholder="Enter Password" name="psw" required />
-        <!-- <input type="file" name="" id=""> -->
-        <!-- <VueBase64FileUpload
-          class="v1"
-          accept="image/png, image/jpeg"
-          image-class="v1-image"
-          input-class="v1-input"
-          :max-size="customImageMaxSize"
-          @size-exceeded="onSizeExceeded"
-          @file="onFile"
-          @load="onLoad"
-        />
-        <div class="vue-base64-file-upload">
-          <img v-show="previewImage && !disablePreview" :src="previewImage" :class="imageClass" />
-          <div class="vue-base64-file-upload-wrapper" :style="wrapperStyles">
-            <input type="file" @change="onChange" :style="fileInputStyles" :accept="accept" />
-            <input
-              type="text"
-              :class="inputClass"
-              :style="textInputStyles"
-              :value="fileName || file && file.name"
-              :placeholder="placeholder"
-              disabled
-            />
-          </div>
-        </div> -->
+        <br>
+        <label for="mob">
+          <b>Mobille</b>
+        </label>
+        <input v-model="mobile" type="text" placeholder="Enter Mobile Number" name="mob" required />
+        <!-- <input v-model="pass2" type="password" placeholder="Enter Password" name="psw" required /> -->
         <label for="">Upload Profile Picture</label>
         <input type="file" name="" id="" @change="fileUpload">
         <button type="button" @click="signup">Sing Up</button>
@@ -60,7 +42,7 @@
 <script>
 import ProfilePic from "../image/user.svg";
 // import VueBase64FileUpload from "vue-base64-file-upload";
-
+var img64 = '';
 export default {
   name: "CustomerSignup",
   data: function() {
@@ -71,30 +53,34 @@ export default {
       pass2: "",
       email: "",
       Uname: "",
-      Baseimage: null
+      Baseimage: {},
+      image64: '',
+      mobile: ""
     };
   },
   methods: {
     signup() {
       // window.console.log(this.pass1+" "+this.pass2+" "+this.email+" "+this.Uname+" ");
-      window.console.log(this.Baseimage);
-      var reader = new FileReader();
-      let path = "";
-      
-      reader.onloadend = function () {
-    // Since it contains the Data URI, we should remove the prefix and keep only Base64 string
-    var b64 = reader.result;
-    this.Baseimage = b64;
-    reader.readAsDataURL(this.Baseimage);
-    // .replace(/^data:.+;base64,/, '');
-    window.console.log(this.Baseimage); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
-  };
-  this.Baseimage = path;
-  window.console.log(this.Baseimage);
+      // window.console.log(this.Baseimage);
+    window.console.log('we in sighnhhyhjhbjhb',img64);
+  // this.Baseimage = path;
+  // window.console.log(this.Baseimage);
     },
     fileUpload(e){
       window.console.log(e.target.files[0]);
       this.Baseimage = e.target.files[0];
+        var reader = new FileReader();
+      // let path = "";
+    reader.readAsDataURL(this.Baseimage);  
+      reader.onloadend = function () {
+    // Since it contains the Data URI, we should remove the prefix and keep only Base64 string
+    var b64 = reader.result;
+
+    img64 = b64;
+    window.console.log("image 64 ",img64);
+    // .replace(/^data:.+;base64,/, '');
+    window.console.log(b64); //-> "R0lGODdhAQABAPAAAP8AAAAAACwAAAAAAQABAAACAkQBADs="
+  };
       // window.console.log(reader)
     }
     // },
