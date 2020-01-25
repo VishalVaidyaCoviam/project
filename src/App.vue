@@ -1,25 +1,31 @@
 <template>
   <div id="app">
-    <Head></Head>
+    <!-- <Head></Head> -->
+    <Header/>
       <router-view/>
+    <Foot/>
   </div>
 </template>
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+/* #app {  */
+  /* font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-}
+  color: #2c3e50; */
+/* } */
 </style>
 <script>
-import Head from '@/components/merchantHeader.vue';
+import Header from '@/components/Header.vue';
+// import Head from '@/components/merchantHeader.vue';
+import Foot from '@/components/Foot.vue';
 // import Home from '@/components/merchanthome.vue'
 export default
 {
   components : {
-     Head
+    //  Head,
+     Foot,
+     Header
    }
 }
 </script>

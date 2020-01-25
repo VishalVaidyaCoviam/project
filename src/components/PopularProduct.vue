@@ -42,6 +42,7 @@ export default {
   }
   ,
   mounted(){
+    window.console.log("Popular");
     this.$store.dispatch('PopularProductAction');
   }
 };

@@ -3,7 +3,7 @@
     <!-- <div style="flex-basis: 10% align-content: flex-start"><img src="#" alt="abc not" onclick=""></div> -->
     <div class="flex-1 al-cn">
       <!-- <img src="#" /> -->
-      <!-- {{jwttokenGetter}} -->
+      {{jwttokenGetter}}
       <label for="" class="Name" @click="popular">BarleyKart</label>
     </div>
     <div class="flex-3 al-cn">
@@ -115,17 +115,17 @@ export default {
   background-color: #f1f1f1;
 }
 
-<script>
+/* <script>
 export default{
     // data : () => {
     //     return  { search } 
     // }
-}
-</script>
+} */
+/* </script> */
 
-/* .dropdown:hover .dropbtn { */
-/* background-color: #2196f3; */
-/* } */
+/* .dropdown:hover .dropbtn {
+background-color: #2196f3;
+} */
 .head_cart {
   height: 50px;
 }

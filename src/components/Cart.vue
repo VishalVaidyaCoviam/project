@@ -126,9 +126,9 @@ export default {
 .al-rg {
   text-align: right;
 }
-.al-lf {
+/* .al-lf {
   /* text-align: left; */
-}
+/* }  */
 .pos {
   height: 85%;
 }

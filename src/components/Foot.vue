@@ -8,7 +8,7 @@
       </p>
     </div>
     <div class="flex-1 al-cn">
-      Subscribe
+      <!-- Subscribe -->
       <br />
       <form class="example">
         <input type="text" placeholder="Enter Email To Subscribe" name="search" />
