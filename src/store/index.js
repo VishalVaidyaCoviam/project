@@ -2,8 +2,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import firebase from 'firebase'
+// import router from './router'
 
-const base_path = 'http://10.177.68.5:8090';
+
+
+
+const base_path = 'http://10.177.68.36:8090';
 // const base_path = 'http://localhost:3000';
 import {
   Googleprovider,
@@ -13,195 +17,409 @@ import {
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    state: {
-      userAccessToken: 'eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySWQiOiIwZWZhMTlhMy02MTAwLTQxZGMtOTg1ZS00YmQ2OTQwNmFiOTEiLCJyb2xlIjoidXNlciJ9.CHwj8gY6grlAokIDGKmUm2TFWP2ol-tOSvM6gU4Q_zqwtETJCzh-S7jojr7E8ZyackLopHwAqcJEPzQPzuepvQ',
-      merchantProducts: [],
-      products: [],
-      merchantProfile: {},
-      merchantOrders: [],
-      allCategories: [],
-      popular: {},
-      product: {},
-      merchantProduct: {},
-      Googletoken: {},
-      Facebooktoken: {},
-      jwttoken: '',
-      searchString: "",
-      searchStringList: {},
-      type: "",
-      response: {},
-      cart: {}
+  state: {
+    userAccessToken: '',
+    merchantProducts: [],
+    products: [],
+    merchantProfile: {},
+    merchantOrders: [],
+    allCategories: [],
+    popular: {},
+    product: {},
+    merchantProduct: {},
+    Googletoken: {},
+    Facebooktoken: {},
+    jwttoken: '',
+    searchString: "",
+    searchStringList: {},
+    type: "",
+    response: {},
+    cart: {},
+    cartObj: {},
+    checkout: "",
+    signup: {},
+    guestToken: '',
+    loginHistory: {},
+    orderHistory: {},
+    customerProfile: {}
+  },
+  mutations: {
+    merchantProductList(state, data) {
+      state.merchantProducts = data
     },
-    mutations: {
-      merchantProductList(state, data) {
-        state.merchantProducts = data
-      },
-      setMerchantProfile(state, data) {
-        state.merchantProfile = data
-      },
-      ordersReceived(state, data) {
-        state.merchantOrders = data
-      },
-      allProducts(state, data) {
-        state.products = data
-      },
-      allCategories(state, data) {
-        state.allCategories = data
-      },
-      popularProductsMutation(state, data) {
-        state.popular = data;
-        window.console.log(data);
-      },
-      productDetailsMutation(state, data) {
-        state.product = data;
-        window.console.log(state.product);
-      },
-      merchantProductDetailsMutation(state, data) {
-        state.merchantProduct = data;
-        window.console.log(state.merchantProduct);
-      },
-      GoogleMutation(state, token) {
-        state.Googletoken = token;
-      },
-      FacebookMutation(state, token) {
-        state.Facebooktoken = token;
-      },
-      setSearchStringMutation(state, data) {
-        state.searchString = data;
-        window.console.log(data);
-        window.console.log('this is my data', state.searchString);
-      },
-      callSearchStringMutation(state, data) {
-        state.searchStringList = data;
-      },
-      loginMutation(state, data) {
-        window.console.log(state.jwttoken);
-        state.jwttoken = data;
-      },
-      typeMutation(state, data) {
-        state.type = data;
-      },
-      ResponseMutation(state, data) {
-        state.response = data;
-      },
-      CartMutation(state, data) {
-        state.cart = data;
-        window.console.log(data);
-      }
+    setMerchantProfile(state, data) {
+      state.merchantProfile = data
     },
-    actions: {
-      getMerchantListOfProducts({
-        commit,
-        state
-      }) {
-        axios
-          .get(base_path + '/merchant/listOfProduct/' + state.userAccessToken)
-          .then((response) => {
-            commit('merchantProductList', response.data.data)
-          })
-      },
-      getMerchantProfile({
-        commit,
-        state
-      }) {
-        var token = state.userAccessToken
-        axios
-          .get(base_path + '/merchant/profile/' + token)
-          .then((response) => {
-            window.console.log(response)
-            commit('setMerchantProfile', response.data.data)
-          })
-      },
-      getOrdersReceived({
-        commit,
-        state
-      }) {
-        axios
-          .get(base_path + '/cartOrder/orderDetails/' + state.userAccessToken)
-          .then((response) => {
-            window.console.log(response)
-            commit('ordersReceived', response.data.data)
-          })
-      },
-      getListOfProducts({
-        commit
-      }, selectedctegory) {
-        axios
-          .get(base_path + '/product/allProducts/' + selectedctegory)
-          .then((response) => {
-            commit('allProducts', response.data.data)
-          })
-      },
-      getListOfCategories({
-        commit
-      }) {
-        axios
-          .get(base_path + '/product/allCategories')
-          .then((response) => {
-            commit('allCategories', response.data.data)
-          })
-      },
+    ordersReceived(state, data) {
+      state.merchantOrders = data
+    },
+    allProducts(state, data) {
+      state.products = data
+      window.console.log(data);
+    },
+    allCategories(state, data) {
+      state.allCategories = data
+      window.console.log(data);
+    },
+    popularProductsMutation(state, data) {
+      state.popular = data;
+      window.console.log(data);
+    },
+    productDetailsMutation(state, data) {
+      state.product = data;
+      window.console.log(state.product);
+    },
+    merchantProductDetailsMutation(state, data) {
+      state.merchantProduct = data;
+      window.console.log(state.merchantProduct);
+    },
+    GoogleMutation(state, token) {
+      state.Googletoken = token;
+    },
+    FacebookMutation(state, token) {
+      state.Facebooktoken = token;
+    },
+    setSearchStringMutation(state, data) {
+      state.searchString = data;
+      window.console.log(data);
+      window.console.log('this is my data', state.searchString);
+    },
+    callSearchStringMutation(state, data) {
+      state.searchStringList = data;
+    },
+    loginMutation(state, data) {
+      window.console.log(state.jwttoken);
+      state.jwttoken = data;
+    },
+    typeMutation(state, data) {
+      state.type = data;
+    },
+    ResponseMutation(state, data) {
+      state.response = data;
+    },
+    CartMutation(state, data) {
+      state.cart = data;
+      window.console.log(data);
+    },
+    CartObjMutation(state, data) {
+      state.cartObj = data;
+    },
+    CheckoutMutation(state, data) {
+      state.checkout = data;
+    },
+    SignUpMutation(state, data) {
+      state.signup = data;
+    },
+    jwtTokenMutation(state, data) {
+      state.jwttoken = data;
+    },
+    guestTokenMutation(state, data) {
+      state.guestToken = data;
+    },
+    loginHistory(state, data) {
+      state.loginHistory = data;
+    },
+    orderHistory(state, data) {
+      state.orderHistory = data;
+    },
+    userAccessTokenMutation(state, data) {
+      state.userAccessToken = data;
+    },
+    setCustomerProfile(state, data) {
+      state.customerProfile = data;
+    }
+  },
+  actions: {
+    addToCartBuyNow({
+      commit
+    }, {
+      Obj,
+      success
+    }) {
+      window.console.log(Obj)
+      axios.post(base_path + '/cartorderservice/cartOrder/addToCart', Obj)
+        .then(function (response) {
+          success && success()
+          window.console.log(response);
+          commit('ResponseMutation', response);
+        });
+    },
+    getGuestToken({
+      commit
+    }, {
+      dispatchCart
+    }) {
+      axios
+        .get(base_path + '/loginservice/getGuestToken')
+        .then((response) => {
+          window.console.log(response);
+          localStorage.setItem('guestToken', response.data.data)
+          commit('guestTokenMutation', response.data.data)
+          dispatchCart && dispatchCart()
 
-      merchantEdit({
-        commit
-      }, data) {
-        axios
-          .post(base_path + '/merchant/edit', data)
-          .then((resp) => {
-            if (resp.status === "1000") {
-              alert("Edit Successfull")
-              commit()
+        })
+    },
+    getUserOrderHistory({
+      commit
+    }) {
+      axios
+        .get(base_path + '/cartorderservice/cartOrder/orderHistory/' + localStorage.getItem('jwtToken'))
+        .then((response) => {
+          window.console.log(response)
+          commit('orderHistory', response)
+        })
+    },
+    getUserLoginHistory({
+      commit
+    }) {
+      axios
+        .get(base_path + '/loginservice/viewHistory/' + localStorage.getItem('jwtToken'))
+        .then((response) => {
+          window.console.log(response)
+          commit('loginHistory', response)
+        })
+    },
+    getGuestAddtoCartToken({
+      commit,
+      dispatch
+    }, Obj) {
+      axios
+        .get(base_path + '/loginservice/getGuestToken')
+        .then((response) => {
+          window.console.log(response);
+          localStorage.setItem('guestToken', response.data.data)
+          commit('guestTokenMutation', response.data.data)
+          let Obj_1 = {
+            merchantId: Obj.merchantId,
+            productId: Obj.productId,
+            quantity: "1",
+            token: response.data.data
+          }
+          window.console.log("After Response")
+          window.console.log(Obj)
+          window.console.log(Obj_1)
+          dispatch('AddToCartAction', Obj_1);
+        })
+    },
+    removejwtToken({
+      commit
+    }) {
+      localStorage.removeItem('jwtToken');
+      commit('jwtTokenMutation', localStorage.getItem('jwtToken'));
+    },
+    SignUpCustomer({
+      commit,
+      router
+    }, {
+      Obj,
+      success,
+      fail
+    }) {
+      window.console.log(Obj);
+      axios
+        .post(base_path + '/loginservice/saveCustomer', Obj)
+        .then((resp) => {
+          window.console.log(resp);
+          if (resp.data.status == 1000) {
+            success && success()
+            alert("SignUp Successfull")
+            commit('SignUpMutation', resp);
+            router.push({
+              path: '/login'
+            })
+          }
+        })
+        .catch(function (error) {
+          window.console.log(error);
+          fail && fail()
+        });
+    },
+    CheckoutAction({
+      commit,
+      dispatch
+    }) {
+      window.console.log("in action ");
+      axios
+        .get(base_path + '/cartorderservice/cartOrder/checkout/' + localStorage.getItem('jwtToken'))
+        .then((response) => {
+          if (response.data.status == 400) {
+            alert(response.data.message)
+          } else {
+            dispatch("CartPageAction");
+            commit('CheckoutMutation', response)
+            window.console.log(response);
+          }
+        })
+    },
+    UpdateQuantity({
+      commit,
+      dispatch
+    }, CartObj) {
+      window.console.log(CartObj);
+      axios
+        .post(base_path + '/cartorderservice/cartOrder/updateQuantity', CartObj)
+        .then((resp) => {
+          window.console.log(resp);
+          if (resp.data.status == 1000) {
+            // window.console.log(resp);
+            dispatch("CartPageAction");
+            alert("Update Successfull")
+            commit('CartObjMutation', resp);
+          }
+        })
+        .catch(function (error) {
+          window.console.log(error);
+        });
+    },
+    removeCart({
+      commit,
+      dispatch
+    }, CartObj) {
+      window.console.log(CartObj);
+      axios
+        .post(base_path + '/cartorderservice/cartOrder/remove', CartObj)
+        .then((resp) => {
+          // if (resp.status === "1000") {
+          window.console.log(resp);
+          dispatch("CartPageAction");
+          alert("Update Successfull")
+          commit('CartObjMutation', resp);
+          // }
+        })
+        .catch(function (error) {
+          window.console.log(error);
+        });
+    },
+    getMerchantListOfProducts({
+      commit
+    }) {
+      axios
+        .get(base_path + '/merchantservice/merchant/listOfProduct/' + localStorage.getItem('userAccessToken'))
+        .then((response) => {
+          commit('merchantProductList', response.data.data)
+        })
+    },
+    getCustomerProfile({
+      commit
+    }) {
+      axios
+        .get(base_path + '/loginservice/viewDetails/' + localStorage.getItem('jwtToken'))
+        .then((response) => {
+          window.console.log(response)
+          commit('setCustomerProfile', response)
+        })
+    },
+    getMerchantProfile({
+      commit
+    }) {
+      axios
+        .get(base_path + '/merchantservice/merchant/profile/' + localStorage.getItem('userAccessToken'))
+        .then((response) => {
+          window.console.log(response)
+          commit('setMerchantProfile', response.data.data)
+        })
+    },
+    getOrdersReceived({
+      commit
+    }) {
+      axios
+        .get(base_path + '/cartorderservice/cartOrder/orderDetails/' + localStorage.getItem('userAccessToken'))
+        .then((response) => {
+          window.console.log(response)
+          commit('ordersReceived', response.data.data)
+        })
+    },
+    getListOfProducts({
+      commit
+    }, selectedctegory) {
+      window.console.log(selectedctegory);
+      axios
+        .get(base_path + '/productservice/product/allProducts/' + selectedctegory)
+        .then((response) => {
+          commit('allProducts', response.data.data)
+        })
+    },
+    getListOfCategories({
+      commit
+    }) {
+      window.console.log("In");
+      axios
+        .get(base_path + '/productservice/product/allCategories')
+        .then((response) => {
+          commit('allCategories', response.data.data)
+        })
+    },
+
+    merchantEdit({
+      commit,
+      dispatch
+    }, data) {
+      axios
+        .post(base_path + '/merchantservice/merchant/edit', data)
+        .then((resp) => {
+          window.console.log(resp)
+          if (resp.data.status == 1000) {
+            // alert("Edit Successfull")
+            dispatch('getMerchantListOfProducts')
+            commit()
+          }
+        })
+        .catch(function (error) {
+          window.console.log(error);
+        });
+    },
+    addProducts({
+      commit,
+      dispatch
+    }, newProduct) {
+      axios
+        .post(base_path + '/merchantservice/merchant/addProducts',
+          newProduct
+        )
+        .then((resp) => {
+          window.console.log('this is my api response', resp)
+          if (resp.data.data.status === "1000") {
+            dispatch('getMerchantListOfProducts');
+            alert("Add Successfull")
+            commit()
+          }
+        })
+        .catch(function (error) {
+          window.console.log(error);
+        })
+    },
+    merchantSignup({
+      commit
+    }, details) {
+      window.console.log('this is data at post', details)
+      axios
+        .post(base_path + '/merchantservice/merchant/registration', details)
+        .then((response) => {
+          window.console.log(response)
+          if (response.status === '1000') {
+            alert('Successfully Registered. Now Login');
+          } else {
+            if (response.message === 'Already Exists') {
+              alert('User Already Exists..Please Login');
             }
-          })
-          .catch(function (error) {
-            window.console.log(error);
-          });
-      },
-      addProducts({
-        commit
-      }, newProduct) {
-        axios
-          .post(base_path + '/merchant/addProducts',
-            newProduct
-          )
-          .then((resp) => {
-            window.console.log('this is my api response', resp)
-            if (resp.status === "1000") {
-              alert("Add Successfull")
-              commit()
-            }
-          })
-          .catch(function (error) {
-            window.console.log(error);
-          })
-      },
-      merchantSignup({
-        commit
-      }, details) {
-        window.console.log('this is data at post', details)
-        axios
-          .post(base_path + '/merchant/registration', details)
-          .then((response) => {
-            window.console.log(response)
-            if (response.status === '1000') {
-              alert('Successfully Registered. Now Login');
-            } else {
-              if (response.message === 'Already Exists') {
-                alert('User Already Exists..Please Login');
-              }
-            }
-          })
-          .catch(function (error) {
-            window.console.log(error);
-          })
-        commit()
-      },
+          }
+        })
+        .catch(function (error) {
+          window.console.log(error);
+        })
+      commit()
+    },
     CartPageAction({
       commit
     }) {
       window.console.log("in cart");
+      let token = "";
+      if (localStorage.getItem('guestToken') === null)
+        token = localStorage.getItem('jwtToken');
+      else
+        token = localStorage.getItem('guestToken');
       axios
-        .get(base_path + "/cartorderservice/cartOrder/cart/" + localStorage.getItem('jwtToken'))
+        .get(base_path + "/cartorderservice/cartOrder/cart/" + token)
         .then(response => (commit('CartMutation', response)))
     },
     AddToCartAction({
@@ -248,15 +466,28 @@ export default new Vuex.Store({
     }, Obj) {
       // window.console.log(Obj.email + " "+Obj.password+" "+Obj.role);
       axios
-        .post(base_path + '/loginservice/login/user', Obj)
+        .post(base_path + '/loginservice/user', Obj)
         .then(function (response) {
-          commit('loginMutation', response.data.data);
+          // window.console.log("Response ",response);
+          // window.console.log("Response ",response.data);
+          // window.console.log("Response ",response.data.data);
+          if (response.data.status == 1000) {
+            if (Obj.userRole == 0) {
+              localStorage.setItem('jwtToken', response.data.data);
+              localStorage.removeItem('guestToken');
+              commit('loginMutation', response.data.data);
+            } else {
+              localStorage.setItem('userAccessToken', response.data.data);
+              commit('userAccessTokenMutation', response.data.data);
+            }
+          } else {
+            alert(response.data.message)
+          }
         })
     },
     GoogleLogin({
-      commit,
-      state
-    }) {
+      commit
+    }, type) {
       firebase.auth().signInWithPopup(Googleprovider).then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         // window.console.log(result.credential);
@@ -267,16 +498,31 @@ export default new Vuex.Store({
         window.console.log(idToken);
         window.console.log(user);
         // commit('GoogleMutation', idToken);
+        window.console.log("state type", type);
         axios
-          .post(base_path + '/loginservice/login/getGoogleDetailsFromWeb', {
+          .post(base_path + '/loginservice/getGoogleDetailsFromWeb', {
             accesstoken: idToken,
-            role: state.type,
-            type: "web"
+            role: type,
+            type: "web",
+            guestAccessToken: localStorage.getItem('guestToken')
           })
           .then(function (response) {
-            window.console.log(response);
-            commit('loginMutation', response.data.data);
-            localStorage.setItem('jwtToken', response.data.data);
+            if (response.data.status == 1000) {
+              window.console.log(response);
+              window.console.log(type);
+              if (type == "0") {
+                localStorage.setItem('jwtToken', response.data.data);
+                localStorage.removeItem('guestToken');
+                commit('loginMutation', response.data.data);
+              } else {
+                localStorage.setItem('userAccessToken', response.data.data);
+                commit('userAccessTokenMutation', response.data.data);
+                // commit('typeMutation',type);
+              }
+            } else {
+              alert(response.data.message)
+            }
+            // 
           })
         // ...
       }).catch(function (error) {
@@ -296,9 +542,8 @@ export default new Vuex.Store({
       });
     },
     FacebookLogin({
-      commit,
-      state
-    }) {
+      commit
+    }, type) {
       firebase.auth().signInWithPopup(Facebookprovider).then(function (result) {
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         var idToken = result.credential.accessToken;
@@ -308,15 +553,32 @@ export default new Vuex.Store({
         // window.console.log(user);
         // commit('FacebookMutation', idToken);
         axios
-          .post(base_path + '/loginservice/login/getFacebookDetails', {
+          .post(base_path + '/loginservice/getFacebookDetails', {
             accesstoken: idToken,
-            role: state.role,
-            type: "web"
+            role: type,
+            type: "web",
+            guestAccessToken: localStorage.getItem('guestToken')
           })
           .then(function (response) {
             window.console.log(response);
-            commit('loginMutation', response.data.data);
+            window.console.log(type);
+            if (response.data.status == 1000) {
+              if (type == "0") {
+                localStorage.setItem('jwtToken', response.data.data);
+                localStorage.removeItem('guestToken');
+                commit('loginMutation', response.data.data);
+              } else {
+                localStorage.setItem('userAccessToken', response.data.data);
+                commit('userAccessTokenMutation', response.data.data);
+                // commit('typeMutation',type);
+              }
+            } else {
+              alert(response.data.message)
+            }
+            // window.console.log(response);
+            // commit('loginMutation', response.data.data);
           })
+        // localStorage.removeItem('guestToken');
         // ...
       }).catch(function (error) {
         // Handle Errors here.
@@ -404,6 +666,18 @@ export default new Vuex.Store({
     },
     cartGetter(state) {
       return state.cart;
+    },
+    userLoginHistoryGetter(state) {
+      return state.loginHistory;
+    },
+    userOrderHistoryGetter(state) {
+      return state.orderHistory;
+    },
+    getUserAccessToken(state) {
+      return state.userAccessToken;
+    },
+    customerProfileGetter(state) {
+      return state.customerProfile;
     }
   }
 })

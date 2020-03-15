@@ -1,7 +1,8 @@
 <template>
-<div class="al-cn">
-        <div v-for="value in userOrderHistoryGetter" v-bind:key="value.orderId">
-            <div class="flex-containerRow">
+<div class="flex-container flex-column al-cn">
+    <h1 style="text-align:left;">Order History</h1>
+        <div class="pflex-1 flex-container flex-column mar" v-for="value in userOrderHistoryGetter.data.data" v-bind:key="value.orderId">
+            <div class="pflex-1 flex-containerRow">
              <div class="image"><img :src="value.productImage"> </div>
                 <div class="details">
                     <div class="row">
@@ -26,11 +27,11 @@
                     </div>
                     <div class="row">
                         <div class="flex1">Product Rating :  </div>
-                        <div class="flex2"><star-rating value="value.productRating"></star-rating></div>
+                        <div class="flex2">{{value.productRating}}</div>
                     </div>
                     <div class="row">
-                        <div class="flex1">Merchant Rating :  </div>
-                        <div class="flex2"><star-rating value="value.MerchantRating"></star-rating></div>
+                        <div class="flex1">Merchant Name :  </div>
+                        <div class="flex2">{{value.merchantName}}</div>
                     </div>
                 </div>
             </div>
@@ -41,7 +42,7 @@
 
 import {mapGetters} from 'vuex'
 export default {
-
+    name:"OrderHistory",
 
     data(){
         return{
@@ -49,6 +50,10 @@ export default {
         }
     },
     mounted() {
+        if(localStorage.getItem('userAccessToken'))
+      this.$router.push({name:'merchanthome'})
+        if(localStorage.getItem('jwtToken') == null)
+            this.$router.push({path:'/login'})
        this.$store.dispatch('getUserOrderHistory');    
     },
     computed: {
@@ -67,33 +72,59 @@ export default {
 <style scoped>
     .details{
     display:flex;
+    /* border:1px solid black; */
     flex-direction:column;
     flex-wrap:wrap;
     height:300px;
     flex-grow:4;
     margin-top: 10px;
     margin-left:10px;
+    /* margin-bottom: 20px; */
+}
+.fflex-1 {
+    flex: 1 0 auto;
+    /* border:1px solid black; */
+}
+.pflex-1 {
+    flex-grow: 1;
+    /* border:1px solid black; */
+}
+.mar {
+    margin-bottom: 20px;
 }
 .al-cn{
-    display:flex;
-    flex-direction:row;
-    margin-left:20px;
-    margin-right:20px;
+    /* display:flex;
+    flex-direction:row; */
+    margin-left:10px;
+    width: 99%;
+    /* margin-bottom:20px; */
+    /* margin-right:20px;  */
+}
+.flex-column {
+    flex-direction: column;
+    /* border:1px solid black; */
+}
+.flex-container {
+    display: flex;
+    /* border:1px solid black; */
 }
 .flex-containerRow{
     display: flex;
-    flex-direction: row;
+    /* flex-direction: row; */
     flex-wrap: wrap;
     background-color: white;
+    /* border:1px solid black; */
     margin-top:5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     height:300px;
 }
 .flex-containerRow > div{
     display:flex;
+    /* border:1px solid black; */
 }
 .image{
     display:flex;
+    /* border:1px solid black; */
     flex-grow:1;
     margin-right:30px;
     justify-content:center;
@@ -104,6 +135,7 @@ export default {
 }
 .row{
     height:30px;
+    /* border:1px solid black; */
     display:flex;
     flex-direction:row;
     font-size: 20px;
@@ -122,39 +154,6 @@ img{
     margin-bottom:10px;
     object-fit:contain;
 }
-
-%visually-hidden {
-  position: absolute;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  height: 1px; width: 1px;
-  margin: -1px; padding: 0; border: 0;
-}
-
-.star-rating {
-
-  &__star {
-    display: inline-block;
-    padding: 3px;
-    vertical-align: middle;
-    line-height: 1;
-    font-size: 1.5em;
-    color: #ABABAB;
-    transition: color .2s ease-out;
-
-    &:hover {
-      cursor: pointer;
-    }
-    
-    &.is-selected {
-      color: #FFD700;
-    }
-  }
-    &__checkbox {
-    @extend %visually-hidden;
-  }
-}
-
 
     
 </style>

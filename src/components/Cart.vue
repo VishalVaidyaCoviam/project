@@ -1,88 +1,33 @@
 <template>
-  <div class="flex-container flex-column">
+  <div  class="flex-container flex-column"> 
     <div class="flex-container">
-      <div class="flex-1">
-        <h2 style="margin-left:20px;">Cart Details</h2>
+      <!-- <div v-if="cartGetter.data.data.length > 0" class="flex-1"> -->
+        <div v-if="cartGetter.data.data.length > 0" class="flex-1">
+        <label style="margin-left:20px;font-weight:900;">Cart Details</label>
+        <div  style="float:right;width:33%;margin-bottom:20px;">
+          <a class="btn btn-dark-blue" @click="checkout">Checkout</a>
+        </div>
+      </div>
+      <div class="flex-1" v-else-if="cartGetter.data.data.length == 0">
+      <div style="float:left;">
+          <label style="font-weight:900;" for="">Cart Empty</label>
+      </div>
+      <div style="float:right;">
+        <router-link to="/popular">Home Page</router-link>
+      </div>
       </div>
     </div>
     <div>
-      <div v-for="cart in cartGetter.data.data"
-        v-bind:key="cart.cartId">
-      <CartComponent  :cart="cart"/></div>
-      <!-- {{cartGetter.data.data}} -->
-      <!-- <div
-        v-for="cart in cartGetter.data.data"
-        v-bind:key="cart.cartId"
-        class="flex-container flex-column cart b"
-      >
-        <div class="gflex-1 flex-row">
-          <div class="gflex-1 al-cn">
-            <img :src="cart.productImage" class="cart-image" alt />
-          </div>
-          <div class="gflex-2">
-            <div class="flex-row b">
-              <div class="gflex-1 flex-column al-lf b">
-                <label
-                  class="label-prod"
-                  style="font-weight:bold;"
-                >{{cart.productName}} ({{cart.productDesc}})</label>
-                <label class="label-prod">{{cart.merchantName}}</label>
-              </div>
-              <div class="gflex-1 flex-column al-cn b">
-                <div class="flex-container" style="justify-content: flex-end;">
-                  <div class="subtotal wrap">
-                    <label for>Sub Total</label>
-                    <hr />
-                    {{cart.totalPrice}}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="gflex-1 flex-row">
-          <div class="gflex-1 mar padd b">
-            <label for="Quantity" class="qunt-div">Quantity</label>
-          </div>
-          <div class="gflex-1 mar b">
-            <div>
-              <select>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
-            </div>
-          </div>
-          <div class="gflex-1 mar b">
-            <div>
-              <a class="btn btn-dark-blue">Update Quantity</a>
-            </div>
-          </div>
-          <div class="gflex-1 mar b">
-            <div>
-              <a class="btn btn-dark-blue">Remove From Cart</a>
-            </div>
-          </div>
-        </div>
-      </div> -->
+      <div v-for="cart in cartGetter.data.data" v-bind:key="cart.cartId">
+        <!-- <div v-for="cart in cartGetter.data" v-bind:key="cart.cartId"> -->
+        <CartComponent :cart="cart" />
+      </div>
     </div>
   </div>
 </template>
 <script>
-// <NumberInputSpinner
-//                   :min="0"
-//                   :max="100000"
-//                   :inputClass="Numberinput"
-//                   :buttonClass="NumberButton"
-//                   :integerOnly="true"
-//                   :value="100"
-//                 />
 import { mapGetters } from "vuex";
 import CartComponent from "./cartComponent";
-// import Numberinput from "./NumberComponent";
-// import NumberInputSpinner from "vue-number-input-spinner";
 import ProfilePic from "../image/user.svg";
 import Plus from "../image/plus.svg";
 import Minus from "../image/minus.svg";
@@ -97,11 +42,23 @@ export default {
       numeric: 0
     };
   },
-  methods: {},
   computed: {
     ...mapGetters(["cartGetter"])
   },
+  methods:{
+    checkout(){
+      if(localStorage.getItem('jwtToken') == null)
+      {
+        alert('please Login to checkout')
+        this.$router.push({path: '/login'})
+      }
+      window.console.log("in checkout ");
+        this.$store.dispatch("CheckoutAction");
+    }
+  },
   mounted() {
+    if(localStorage.getItem('userAccessToken'))
+      this.$router.push({name:'merchanthome'})
     this.$store.dispatch("CartPageAction");
   },
   components: {
@@ -116,7 +73,6 @@ export default {
 <style scoped>
 .subtotal {
   /* float:right; */
-
   width: 30%;
   max-width: 100%;
   /* width: auto; */

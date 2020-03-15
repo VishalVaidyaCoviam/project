@@ -1,5 +1,6 @@
 <template>
     <div class="al-cn">
+      Hello
         <div class="container" >
           <div class="values"><img :src="profilePic" alt="" class="image" ></div>
           <div class="values">Name :</div>
@@ -8,11 +9,20 @@
           <div><input type="number" v-model="mobile" placeholder="Phone"></div>
           <div>Password : </div>
           <div><input type="password" v-model="password" placeholder="xxxxx"></div>
+          <div>Retype Password : </div>
+          <div><input type="text" v-model="retypePassword" placeholder="xxxxx"></div>
           <div>E-mail : </div>
           <div><input type="text" v-model="email" placeholder="Email"></div>
           <div>Address : </div>
-          <div><input type="text" v-model="address" placeholder="address"></div>
-          <div><button type="button" @click="signup()">SignUp</button></div>
+          <div><input type="textarea" style="width:100%;" rows="5" v-model="address" placeholder="address"></div>
+          <div><button type="button" @click="checkForm()">SignUp</button></div>
+          <p v-if="errors.length" style="color:red;">
+            <b>Please correct the following error(s):</b>
+            <ul>
+                <li v-for="error in errors" :key='error.id' >{{ error }}</li>
+            </ul>
+
+         </p>
           </div>
     </div>
 </template>
@@ -24,28 +34,80 @@ import user from "../assets/user.svg";
 export default {
     data: () => {
         return {
-            name: '',
-            mobile: '',
-            password: '',
-            email: '',
-            address:'',
+            name: null,
+            mobile: null,
+            password: null,
+            retypePassword:null,
+            email:null,
+            address:null,
             rating:'0',
-            profilePic: user
+            profilePic: user,
+            errors: []
         }
-    },
+        },
     methods: {
+        checkForm: function (e) {
+          this.errors=[]
+            if(this.mobile)
+            {
+              window.console.log(this.mobile.length)
+                if(this.mobile.length !== 10)
+                {
+                    this.errors.push('Number should be 10 digits')
+                }
+            }
+            if(this.email){
+                if(!this.validEmail(this.email))
+                {
+                    this.errors.push('Email invalid')
+                }
+            }
+            if (!this.name) {
+                    this.errors.push('Name required.');
+                }
+            if (!this.mobile) {
+                    this.errors.push('Mobile required.');
+                }
+            if (!this.email) {
+                    this.errors.push('Email required.');
+                }
+            if (!this.password) {
+                    this.errors.push('Password required.');
+                }
+            if (!this.retypePassword) {
+                    this.errors.push('Retype Password required.');
+                }
+            if (!this.address) {
+                    this.errors.push('Address required.');
+                }
+            if(this.password !== this.retypePassword) {
+              this.errors.push('Passwords does not match')
+            }
+            if(!this.errors.length)
+            {
+                this.signup()
+            }
+            e.preventDefault();
+        },
+        validEmail: function (email) {
+          var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        // {1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+            },
+
         signup(){
+          window.console.log("Sign Up");
             var details = {
-                'merchantName':this.name , 
-                'mobileNo':this.mobile , 
-                'merchantRating':this.rating , 
-                'merchantEmail':this.email , 
-                'merchantAddress':this.address , 
+                'merchantName':this.name ,
+                'mobileNo':this.mobile ,
+                'merchantRating':this.rating ,
+                'merchantEmail':this.email ,
+                'merchantAddress':this.address ,
                 'merchantPassword':this.password
                  }
-            window.console.log('At signup',details)
-            this.$store.dispatch('merchantSignup',details)
-            this.$router.push({name: 'login'})
+              window.console.log('At signup',details)
+              this.$store.dispatch('merchantSignup',details)
+              this.$router.push({name: 'login'})
         }
     }
 }

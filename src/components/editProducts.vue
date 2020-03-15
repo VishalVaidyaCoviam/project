@@ -33,6 +33,10 @@ export default {
             computed: {
                 ...mapGetters (['getuserAccessToken'])
                 },
+                mounted(){
+        if(localStorage.getItem('userAccessToken') == null )
+            this.$router.push({path : '/login'})
+    }
 }
 </script>
 <style scoped>

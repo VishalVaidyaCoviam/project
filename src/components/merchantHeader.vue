@@ -1,6 +1,7 @@
 <template>
   <div class="flex-container">
     <div>
+      <img :src="beer" alt="" style="height:50px;margin-left:40px;">
       <label for="" class="Name" @click="goHome()">BarleyKart</label>
     </div>
     <div class="right">
@@ -8,22 +9,29 @@
         <img :src="profilePic" class="dropbtn" />
         <div class="dropdown-content">
             <button @click="goProfile">Profile</button>
-            <a href="#">Logout</a>
+            <a @click="logout">Logout</a>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import Beer from "../image/beer.svg";
 import ProfilePic from "../assets/user.svg";
 import { mapGetters } from 'vuex';
 export default {
   data: function() {
     return {
-      profilePic: ProfilePic
+      profilePic: ProfilePic,
+      beer: Beer
     };
   },
   methods: {
+    logout(){
+      localStorage.removeItem('userAccessToken')
+      this.$store.state.userAccessToken = '';
+      this.$router.push({ path: `/login` });
+    },
     login() {
       this.$router.push({ path: `/login` });
     },
@@ -44,7 +52,7 @@ export default {
   font-size: 40px;
   font-family:  fantasy;
   margin-bottom: 15px;
-  margin-left: 50px;
+  
 }
 .name:hover {
   cursor: pointer;

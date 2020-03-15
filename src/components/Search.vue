@@ -1,11 +1,16 @@
 <template>
   <div class="flex-container flex-wrap">
-      <div class="flex-container" >
+      <div v-if="searchStringListGetter.data.length != 0" class="flex-container" >
       <div class="flex-1">
     <h2 style="margin-left:20px;">
       Product Details
     </h2>
       </div>
+      </div>
+      <div v-if="searchStringListGetter.data.length == 0"> 
+        <center>
+          <h1>No Results Found</h1>
+        </center>
     </div>
       <!-- {{searchStringListGetter}} -->
   <div v-for="product in searchStringListGetter.data" v-bind:key="product.productId" class="prod-div al-cn bd" @click=productDetails(product.productId)>
@@ -62,7 +67,8 @@ export default {
     // ...mapGetters(["searchStringGetter"]);
   },
   mounted() {
-      
+      if(localStorage.getItem('userAccessToken'))
+      this.$router.push({name:'merchanthome'})
       this.$store.dispatch('callSearchString');
     // this.$store.dispatch(['productDetailsAction'],prodcutId);
     // this.$store.dispatch("productDetailsAction");

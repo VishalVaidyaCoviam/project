@@ -1,68 +1,54 @@
 <template>
   <div>
-    <h2 style="margin-left:20px;">
-      Product Details
-    </h2>
-    
+    <h2 style="margin-left:20px;">Product Details</h2>
+
     <!-- {{this.$store.state.product}} -->
     <div class="flex-container flex-row">
       <div class="pflex-1">
         <!-- {{ productDetailsGetter.data }} -->
         <!-- {{merchantProductDetailsGetter.data}} -->
         <img v-bind:src="productDetailsGetter.data.data.productImage" alt class="prod-img" />
-        <br>
-        <!-- <div class="flex-container"> -->
-      <!-- <div class="flex-1 col-three" @click="addToCart">
-        <a class="btn btn-dark-blue">Add to Cart</a>
-      </div> -->
-      <!-- </div> -->
+        <!-- <img v-bind:src="productDetailsGetter.data.productImage" alt class="prod-img" /> -->
+        <br />
       </div>
       <div class="pflex-3 content">
         <div class="flex-container flex-row">
           <div class="pflex-1 flex-column">
-            <div><label for>Product Name:</label></div>
-            <div><label for="">Product description:</label></div>
-            <div><label for="">Product Sell Count:</label></div>
-            <div class="col-three" @click="addToCart">
-              <a class="btn btn-dark-blue">Add to Cart</a>
-            </div>       
+            <div class="pflex-1 flex-row">
+              <div class="pflex-1">
+                <label for>Product Name:</label>
+              </div>
+              <div class="pflex-9">{{productDetailsGetter.data.data.productName}}</div>
+            </div>
+            <div class="pflex-1 flex-row">
+              <div class="pflex-1">
+                <label for>Product description:</label>
+              </div>
+              <div id="desc_div" class="pflex-1">{{productDetailsGetter.data.data.productDesc}}</div>
+            </div>
+            <div class="pflex-1 flex-row">
+              <div class="pflex-1">
+                <label for>Product Sell Count:</label>
+              </div>
+              <div class="pflex-18">{{productDetailsGetter.data.data.sellCount}}</div>
+            </div>
+            <div class="pflex-1 flex-row">
+              <div class="col-three pflex-1" @click="addToCart" style="width:33%;">
+                <a class="btn btn-dark-blue">Add to Cart</a>
+              </div>
+              <div class="col-buy pflex-1" @click="buyNow" style="width:33%;">
+                <a class="btn btn-dark-blue">Buy Now!</a>
+              </div>
+            </div>
           </div>
-          <div class="pflex-3 flex-column wrap">
-            <div>{{productDetailsGetter.data.data.productName}}</div>
+          <!-- <div class="pflex-3 flex-column wrap"> -->
+          <!-- <div>{{productDetailsGetter.data.data.productName}}</div>
             <div id="desc_div">{{productDetailsGetter.data.data.productDesc}}</div>
-            <div>{{productDetailsGetter.data.data.sellCount}}</div>   
-            <div class="col-buy" @click="addToCart" style="width:33%;">
-              <a class="btn btn-dark-blue">Buy Now!</a>
-            </div>       
-          </div>
-          
+          <div>{{productDetailsGetter.data.data.sellCount}}</div>-->
+
+          <!-- </div> -->
         </div>
-        <!-- <table class="tbl-merchant">
-          <tr>
-            <th>
-              <label for>Product Name:</label>
-            </th>
-            <td>
-              <label for="productName">{{productDetailsGetter.data.productName}}</label>
-            </td>
-          </tr>
-          <tr>
-            <th>
-              <label for>Product description:</label>
-            </th>
-            <td>{{productDetailsGetter.data.productDesc}}</td>
-          </tr>
-          <tr>
-            <th>
-              <label for>Product Name:</label>
-            </th>
-            <td>
-              <label for="productName">{{productDetailsGetter.data.productName}}</label>
-            </td>
-          </tr>
-        </table> -->
       </div>
-      <!-- <br /> -->
     </div>
     <h3 style="margin-left:20px;">Merchant Details</h3>
     <div class="flex-container flex-column">
@@ -80,6 +66,7 @@
           </th>
         </tr>
         <!-- <tr> -->
+        <!-- v-for="merchant in merchantProductDetailsGetter.data.data" -->
         <tr v-for="merchant in merchantProductDetailsGetter.data.data" v-bind:key="merchant.merchantId">
           <td>
             <input
@@ -87,7 +74,7 @@
               type="radio"
               name="merchant"
               v-bind:value="merchant.merchantId"
-            /> 
+            />
             <!-- {{merchant.merchantId}} -->
           </td>
           <td>
@@ -113,7 +100,7 @@ export default {
     return {
       product: "",
       productId: "",
-      merchantId: "1"
+      merchantId: ""
     };
   },
   props: {},
@@ -121,45 +108,130 @@ export default {
     addToCart() {
       window.console.log(this.merchantId);
       window.console.log(this.productId);
-      
-      if(localStorage.getItem('jwtToken') === null)
-      {
+
+      if (localStorage.getItem("jwtToken") === null) {
+          this.guestTokenFunction
         let Obj = {
-          merchantId : this.merchantId,
-          productId : this.productId,
+          merchantId: this.merchantId,
+          productId: this.productId,
           quantity: "1",
-          UserId:localStorage.getItem('GuestToken')
+          token: localStorage.getItem("guestToken")
         };
-        this.$store.dispatch('AddToCartAction',Obj);
-      }
-      else{
+        if(localStorage.getItem("guestToken") != null)
+          this.$store.dispatch("AddToCartAction", Obj);
+        else
+          this.$store.dispatch('getGuestAddtoCartToken',Obj);
+      } else {
+        // if(this.merchantId == 0)
+        // eslint-disable-next-line no-undef
+        // this.merchantId = merchantProductDetailsGetter.data.data[0].merchantId
         let Obj = {
-          merchantId : this.merchantId,
-          productId : this.productId,
+          merchantId: this.merchantId,
+          productId: this.productId,
           quantity: "1",
-          token:localStorage.getItem('jwtToken')
+          token: localStorage.getItem("jwtToken")
         };
         window.console.log(Obj.token);
-        this.$store.dispatch('AddToCartAction',Obj);
-      } 
+        this.$store.dispatch("AddToCartAction", Obj);
+      }
       // window.console.log()
+    },
+  //  buyNow1() {
+  //     window.console.log(this.merchantId);
+  //     window.console.log(this.productId);
+
+  //     if (localStorage.getItem("jwtToken") === null) {
+  //         this.guestTokenFunction
+  //       let Obj = {
+  //         merchantId: this.merchantId,
+  //         productId: this.productId,
+  //         quantity: "1",
+  //         token: localStorage.getItem("GuestToken")
+  //       };
+  //       if(localStorage.getItem("GuestToken") != null)
+  //         this.$store.dispatch("AddToCartAction", Obj);
+  //       else
+  //         this.$store.dispatch('getGuestAddtoCartToken',Obj);
+  //     } else {
+  //       // if(this.merchantId == 0)
+  //       // eslint-disable-next-line no-undef
+  //       // this.merchantId = merchantProductDetailsGetter.data.data[0].merchantId
+  //       let Obj = {
+  //         merchantId: this.merchantId,
+  //         productId: this.productId,
+  //         quantity: "1",
+  //         token: localStorage.getItem("jwtToken")
+  //       };
+  //       window.console.log(Obj.token);
+  //      this.$store.dispatch("AddToCartAction", Obj);
+  //     }
+  //     // window.console.log()
+  //     this.$router.push({path: '/cart'})
+  //  },
+  buyNow() {
+      if (localStorage.getItem("jwtToken") != null) 
+        this.AddtoCart()
+      else if(localStorage.getItem("guestToken") != null)
+        this.AddtoCart()
+      else
+      {
+        this.$store.dispatch('getGuestToken',{
+          dispatchCart : this.AddtoCart
+        })
+      }
+    },
+    AddtoCart(){
+      window.console.log("in");
+      if (localStorage.getItem("jwtToken") === null) {
+        window.console.log("guest");
+          let Obj = {
+            merchantId: this.merchantId,
+          productId: this.productId,
+          quantity: "1",
+          token: localStorage.getItem("guestToken")
+          }
+          this.$store.dispatch('addToCartBuyNow',{
+            Obj : Obj,
+            success: this.dispatchCart
+          })
+      }
+      else
+      {
+        window.console.log("jwtToken");
+        let Obj = {
+          merchantId: this.merchantId,
+          productId: this.productId,
+          quantity: "1",
+          token: localStorage.getItem("jwtToken")
+        }
+         this.$store.dispatch('addToCartBuyNow',{
+            Obj : Obj,
+            success: this.dispatchCart
+          })
+      }
+         
+    },
+    dispatchCart(){
+       this.$router.push({path: '/cart'})
     }
   },
   created() {
     this.productId = this.$route.params.id;
+    // this.merchantId = merchantProductDetailsGetter.data.data[0].merchantId;
   },
   computed: {
-    
     // get(){
     //   return this.$store.state.product;
     // }
+
     ...mapGetters(["merchantProductDetailsGetter", "productDetailsGetter"])
   },
   mounted() {
-    
-    this.$store.dispatch('productDetailsAction',this.productId);
+    if(localStorage.getItem('userAccessToken'))
+      this.$router.push({name:'merchanthome'})
+    this.$store.dispatch("productDetailsAction", this.productId);
     // this.$store.dispatch("productDetailsAction");
-    this.$store.dispatch('merchantProductDetailsAction',this.productId);
+    this.$store.dispatch("merchantProductDetailsAction", this.productId);
     // this.$store.dispatch("merchantProductDetailsAction");
   }
 };
@@ -251,24 +323,38 @@ a {
 }
 .flex-column > div {
   width: 100%;
-  height: 50px;
+  /* height: 50px; */
 }
 .flex-column {
   display: flex;
   flex-direction: column;
+  /* border:1px solid black; */
 }
 .pflex-1 {
   flex-grow: 1;
+  /* border:1px solid black; */
 }
 .pflex-3 {
-  flex-grow: 1;
-  max-width: 70vw;
+  flex-grow: 3;
+  /* max-width: 70vw; */
+}
+.pflex-4 {
+  flex-grow: 4;
+}
+.pflex-9 {
+  flex-grow: 9;
+}
+.pflex-18 {
+  flex-grow: 18;
 }
 .flex-row {
   flex-direction: row;
+  display: flex;
+  /* border:1px solid black; */
 }
 .flex-container {
   display: flex;
+  /* border:1px solid black; */
   /* border: 1px solid black; */
 }
 .flex-1 {
@@ -281,6 +367,7 @@ a {
 }
 .prod-img {
   height: 350px;
+  /* max-width: 50%; */
 }
 .content {
   padding-left: 3%;

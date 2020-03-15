@@ -62,28 +62,50 @@ export default {
         window.console.log(this.email);
         window.console.log(this.pass);
         window.console.log(this.type);
-        var loginObj = {
+        if(localStorage.getItem('guestToken') != null)
+        {
+           let loginObj = {
+            "userEmail":this.email,
+            "userPassword":this.pass,
+            "userRole":this.type,
+            "type": "web",
+            "guestToken":localStorage.getItem('guestToken')
+        }
+        this.$store.dispatch('login',loginObj);
+
+        this.$router.push({path: `/popular`});
+        }
+        else
+        {
+          let loginObj = {
             "userEmail":this.email,
             "userPassword":this.pass,
             "userRole":this.type,
             "type": "web"
+          }
+          this.$store.dispatch('login',loginObj);
+        this.$router.push({path: `/popular`});
         }
         // window.console.log(loginObj);
         // this.loginObj.email = this.email;
         // this.loginObj.pass = this.pass;
         // this.loginObj.type = this.type;
-        this.$store.dispatch('login',loginObj);
-        this.$router.push({path: `/popular`});
     },
     changeRadio() {
 
     },
     GmailLogin(){
-        this.$store.dispatch('GoogleLogin');  
+        this.$store.dispatch('GoogleLogin',this.type);  
+        this.$router.push({path: '/popular'})
     },
     FacebookLogin(){
-      this.$store.dispatch('FacebookLogin');
+      this.$store.dispatch('FacebookLogin',this.type);
+      this.$router.push({path: '/popular'})
     }
+  },
+  mounted(){
+    if(localStorage.getItem('jwtToken') || localStorage.getItem('userAccessToken'))
+      this.$router.push({path: '/popular'})
   }
 };
 </script>

@@ -35,6 +35,8 @@ export default {
         }
     },
     mounted() {
+        if(!localStorage.getItem('userAccessToken'))
+      this.$router.push({path:'/popular'})
        this.$store.dispatch('getOrdersReceived');    
     },
     computed: {

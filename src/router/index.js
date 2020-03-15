@@ -6,6 +6,11 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path:'*',
+    name:'errorPage',
+    component: () => import( /* webpackChunkName: "about" */ '../components/Error.vue'),
+  },
+  {
     path: '/',
     name: 'merchanthome',
     component: () => import(/* webpackChunkName: "about" */ '../components/merchanthome.vue')
@@ -102,6 +107,21 @@ const routes = [
     path:'/popular',
     name:'popularProduct',
     component: () => import( /* webpackChunkName: "about" */ '../components/PopularProduct.vue'),
+  },
+  {
+    path:'/loginHistory',
+    name:'LoginHistory',
+    component: () => import( /* webpackChunkName: "about" */ '../components/loginHistory.vue'),
+  },
+  {
+    path:'/customerProfile',
+    name:'customerProfile',
+    component: () => import( /* webpackChunkName: "about" */ '../components/CustomerProfile.vue'),
+  },
+  {
+    path:'/orderHistory',
+    name: 'OrderHistory',
+    component: () => import( /* webpackChunkName: "about" */ '../components/orderHistory.vue'),
   }
 
 ]

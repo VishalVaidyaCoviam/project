@@ -3,7 +3,7 @@
     <div class="flex-container" >
       <div class="flex-1">
     <h2 style="margin-left:20px;">
-      Product Details
+      Popular Details
     </h2>
       </div>
     </div>
@@ -42,6 +42,8 @@ export default {
   }
   ,
   mounted(){
+    if(localStorage.getItem('userAccessToken'))
+      this.$router.push({name:'merchanthome'})
     window.console.log("Popular");
     this.$store.dispatch('PopularProductAction');
   }

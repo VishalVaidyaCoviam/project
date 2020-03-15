@@ -34,6 +34,8 @@ export default {
     },
     mounted() {
     this.$store.dispatch('getMerchantProfile');
+        if(localStorage.getItem('userAccessToken') == null )
+            this.$router.push({path : '/login'})
     },
     computed: {
         ...mapGetters(['merchantProfileGetter'])

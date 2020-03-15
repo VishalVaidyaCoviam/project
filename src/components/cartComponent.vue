@@ -2,16 +2,18 @@
     <div
       class="flex-container flex-column cart b"
     >
-        <div class="gflex-1 flex-row">
-          <div class="gflex-1 al-cn">
+        <div class="gflex-1 b flex-row">
+          <div class="gflex-1 b al-cn">
             <img :src="cart.productImage" class="cart-image" alt />
           </div>
-          <div class="gflex-2">
+          <div class="gflex-2 b">
               
-            <div class="flex-row b ">                
+            <div class="flex-row b wrap ">                
+              <div class="gflex-3 flex-column al-lf b desc">
+                  {{cart.productName}}  ({{cart.productDesc}})
+              </div>
               <div class="gflex-1 flex-column al-lf b">
-                  <label class="label-prod" style="font-weight:bold;">{{cart.productName}}  ({{cart.productDesc}})</label>
-                  <label class="label-prod">{{cart.merchantName}}</label>
+                  <label class=""><small>sold by </small>{{cart.merchantName}}</label>
               </div>
               <!-- <div class="gflex-1 flex-column al-cn b "></div> -->
               <div class="gflex-1 flex-column al-cn b ">
@@ -30,25 +32,19 @@
           <div class="gflex-1 mar padd b">
             <label for="Quantity" class="qunt-div">Quantity</label>
           </div>
-          <div class="gflex-1 mar b">
+          <div class="gflex-1 mar b"> 
             <div>
-              <select >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </select>
+              <input type="number" v-model="cart.quantity">
             </div>
           </div>
           <div class="gflex-1 mar b">
             <div>
-              <a class="btn btn-dark-blue">Update Quantity</a>
+              <a class="btn btn-dark-blue" @click="updateQuantity">Update Quantity</a>
             </div>
           </div>
           <div class="gflex-1 mar b">
             <div>
-              <a class="btn btn-dark-blue">Remove From Cart</a>
+              <a class="btn btn-dark-blue" @click="deleteCart">Remove From Cart</a>
             </div>
           </div>
       </div>
@@ -67,10 +63,67 @@ export default {
     props: {
         cart: {
         }
+    },
+    methods : {
+      updateQuantity(){
+        if(localStorage.getItem('jwtToken')){
+        let CartObj = {
+            'token':localStorage.getItem('jwtToken'),
+            'productId':this.cart.productId,
+            'merchantId':this.cart.merchantId,
+            'quantity':this.cart.quantity
+        }
+        window.console.log(CartObj);
+                this.$store.dispatch('UpdateQuantity',CartObj);
+                this.$store.dispatch("CartPageAction");
+        }
+        else
+        {
+          let CartObj = {
+            'token':localStorage.getItem('guestToken'),
+            'productId':this.cart.productId,
+            'merchantId':this.cart.merchantId,
+            'quantity':this.cart.quantity
+        }
+        window.console.log(CartObj);
+                this.$store.dispatch('UpdateQuantity',CartObj);
+                this.$store.dispatch("CartPageAction");
+        }
+      },
+      deleteCart() {
+        if(localStorage.getItem('jwtToken'))
+        {
+        let CartObj = {
+            'token':localStorage.getItem('jwtToken'),
+            'productId':this.cart.productId,
+            'merchantId':this.cart.merchantId,
+            'quantity':this.cart.quantity
+        }
+        window.console.log(CartObj);
+        this.$store.dispatch('removeCart',CartObj);
+        }
+        else{
+          let CartObj = {
+            'token':localStorage.getItem('guestToken'),
+            'productId':this.cart.productId,
+            'merchantId':this.cart.merchantId,
+            'quantity':this.cart.quantity
+        }
+        window.console.log(CartObj);
+        this.$store.dispatch('removeCart',CartObj);
+        }
+      }
     }
 }
 </script>
 <style scoped>
+.drop {
+  width: 150px;
+}
+.desc {
+  word-break: break-word;
+  width: 30vh;
+}
 .subtotal {
     /* float:right; */
         
@@ -84,9 +137,9 @@ export default {
 .al-rg {
     text-align: right;
 }
-.al-lf {
+/* .al-lf { */
     /* text-align: left; */
-}
+/* } */
 .pos {
   height: 85%;
 }
@@ -97,11 +150,20 @@ export default {
 .label-prod {
   margin-bottom: 15px;
 }
-input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]{
+  height: 30px;
+  font-size: 14px;
+}
+input[type=number]::-webkit-inner-spin-button {  
+    width: 20px;
+    height: 120px;
+}
+
+/* input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
+} */
 .txt-number {
   height: 30px;
   -webkit-appearance: none;
@@ -212,15 +274,18 @@ a {
 }
 .flex-container {
   display: flex;
+  flex-wrap: wrap;
 }
 .flex-row {
   display: flex;
   flex-flow: row;
+  flex-wrap: wrap;
   /* flex-direction: row; */
 }
 .flex-column {
   display: flex;
   flex-flow: column;
+  flex-wrap: wrap;
   /* flex-direction: column; */
 }
 .flex-1 {

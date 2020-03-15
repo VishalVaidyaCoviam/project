@@ -7,15 +7,16 @@
             <br>
             <tr>
                 <td>Category</td>
-                <td><select v-model="selectedcategory">
-                    <option v-for="valueCategory in getAllCategories.data" v-bind:key="valueCategory.categoryId" v-bind:value="valueCategory.categoryId" @select="findProducts()"> {{valueCategory.categoryName}}</option>
+                <td><select v-model="selectedcategory" @change="findMe">
+                    <option v-for="valueCategory in getAllCategories" :key="valueCategory.productCategoryId" :value="valueCategory.productCategoryId" > {{valueCategory.productCategoryName}}</option>
                     </select>
                 </td>
             </tr><br>
             <tr>
                 <td>Product</td>
-                <td><select v-model="selectedproduct">
-                    <option v-for="valueProduct in getAllProducts.data" v-bind:key="valueProduct.productId" v-bind:value="valueProduct.productId" > {{valueProduct.productName}}</option>
+                <td>
+                    <select v-model="selectedproduct">
+                    <option v-for="valueProduct in getAllProducts" v-bind:key="valueProduct.productId" v-bind:value="valueProduct.productId" > {{valueProduct.productName}}</option>
                     </select>
                 </td>
             </tr>
@@ -46,19 +47,22 @@ import {mapGetters} from 'vuex'
         mounted() {
                 // this.$store.dispatch('getListOfProducts');   
                 this.$store.dispatch('getListOfCategories');
+        if(localStorage.getItem('userAccessToken') == null )
+            this.$router.push({path : '/login'})
             },
         computed: {
-                ...mapGetters (['getAllProducts']),
-                ...mapGetters (['getuserAccessToken']),
-                ...mapGetters (['getAllCategories'])
+                ...mapGetters (['getAllProducts','getAllCategories']),
+                // ...mapGetters (['getAllCategories'])
                 },
         methods:{ 
-                findProducts(){
+                findMe(){
+                    window.console.log(this.selectedcategory);
                     this.$store.dispatch('getListOfProducts',this.selectedcategory);
                 },
     
                 sendProducts(){
-                    var newProduct={'token':this.getuserAccessToken,'productId' :this.selected, 'quantity': this.quantity , 'price':this.price }
+                    window.console.log(this.quantity + " "+ this.selectedproduct + " " + this.price + " " + localStorage.getItem('userAccessToken'));
+                    var newProduct={'token':localStorage.getItem('userAccessToken'),'productId' :this.selectedproduct, 'quantity': this.quantity , 'price':this.price }
                     this.$store.dispatch('addProducts',newProduct)
                     this.$router.push({name: 'listOfProduct'})
                 }

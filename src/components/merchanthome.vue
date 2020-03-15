@@ -20,7 +20,14 @@
     </div>
 </div>
 </template>
-
+<script>
+export default {
+    mounted(){
+        if(localStorage.getItem('userAccessToken') == null )
+            this.$router.push({path : '/login'})
+    }
+}
+</script>
 <style scoped>
 
 .card {
